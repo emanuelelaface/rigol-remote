@@ -39,7 +39,7 @@ def get_png_image():
     global selected_ip, selected_port
     command = ':DISPlay:DATA? ON,OFF,PNG\n'
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.settimeout(30)
+        s.settimeout(60)
         s.connect((selected_ip, selected_port))
         s.sendall(command.encode())
         # Read the first 2 bytes (should be something like b'#4')
@@ -176,5 +176,6 @@ async def update_canvas():
     '''
     ui.run_javascript(js_code)
 
-ui.run()
+ui.run(title="Rigol Remote")
+
 
