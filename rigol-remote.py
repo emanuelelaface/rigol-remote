@@ -110,6 +110,16 @@ def convert_png_data_to_data_url(data):
     encoded = base64.b64encode(data).decode('utf-8')
     return f"data:image/png;base64,{encoded}"
 
+def convert_unit(value):
+    """Convert number for print with unit"""
+    if abs(value) < 1e-6:
+        return f'{value*1e9:.1f} n'
+    if abs(value) < 1e-3:
+        return f'{value*1e6:.1f} µ'
+    if abs(value) < 1:
+        return f'{value*1e3:.1f} m'
+    return f'{value:.1f} '
+
 def send_command_to_scope(command):
     """Sends a specific command to the oscilloscope."""
     global selected_ip, selected_port
@@ -275,75 +285,75 @@ with display_container:
             ch2_button = ui.button("CH2").classes("button-size button-grey")
             with ui.dropdown_button('Time', auto_close=False).props('style="text-transform:none;"').classes("button-size"):
                 with ui.dropdown_button('ns', auto_close=True).props('style="text-transform:none;"'):
-                    ui.item('5', on_click=lambda: asyncio.create_task(set_time(0.000000005)))
-                    ui.item('10', on_click=lambda: asyncio.create_task(set_time(0.00000001)))
-                    ui.item('20', on_click=lambda: asyncio.create_task(set_time(0.00000002)))
-                    ui.item('50', on_click=lambda: asyncio.create_task(set_time(0.00000005)))
-                    ui.item('100', on_click=lambda: asyncio.create_task(set_time(0.0000001)))
-                    ui.item('200', on_click=lambda: asyncio.create_task(set_time(0.0000002)))
-                    ui.item('500', on_click=lambda: asyncio.create_task(set_time(0.0000005)))
+                    ui.item('5', on_click=lambda: (asyncio.create_task(set_time(0.000000005)), ui.notify('Time set to 5 ns')))
+                    ui.item('10', on_click=lambda: (asyncio.create_task(set_time(0.00000001)), ui.notify('Time set to 10 ns')))
+                    ui.item('20', on_click=lambda: (asyncio.create_task(set_time(0.00000002)), ui.notify('Time set to 20 ns')))
+                    ui.item('50', on_click=lambda: (asyncio.create_task(set_time(0.00000005)), ui.notify('Time set to 50 ns')))
+                    ui.item('100', on_click=lambda: (asyncio.create_task(set_time(0.0000001)), ui.notify('Time set to 100 ns')))
+                    ui.item('200', on_click=lambda: (asyncio.create_task(set_time(0.0000002)), ui.notify('Time set to 200 ns')))
+                    ui.item('500', on_click=lambda: (asyncio.create_task(set_time(0.0000005)), ui.notify('Time set to 500 ns')))
                 with ui.dropdown_button('µs', auto_close=True).props('style="text-transform:none;"'):
-                    ui.item('1', on_click=lambda: asyncio.create_task(set_time(0.000001)))
-                    ui.item('2', on_click=lambda: asyncio.create_task(set_time(0.000002)))
-                    ui.item('5', on_click=lambda: asyncio.create_task(set_time(0.000005)))
-                    ui.item('10', on_click=lambda: asyncio.create_task(set_time(0.00001)))
-                    ui.item('20', on_click=lambda: asyncio.create_task(set_time(0.00002)))
-                    ui.item('50', on_click=lambda: asyncio.create_task(set_time(0.00005)))
-                    ui.item('100', on_click=lambda: asyncio.create_task(set_time(0.0001)))
-                    ui.item('200', on_click=lambda: asyncio.create_task(set_time(0.0002)))
-                    ui.item('500', on_click=lambda: asyncio.create_task(set_time(0.0005)))
+                    ui.item('1', on_click=lambda: (asyncio.create_task(set_time(0.000001)), ui.notify('Time set to 1 µs')))
+                    ui.item('2', on_click=lambda: (asyncio.create_task(set_time(0.000002)), ui.notify('Time set to 2 µs')))
+                    ui.item('5', on_click=lambda: (asyncio.create_task(set_time(0.000005)), ui.notify('Time set to 5 µs')))
+                    ui.item('10', on_click=lambda: (asyncio.create_task(set_time(0.00001)), ui.notify('Time set to 10 µs')))
+                    ui.item('20', on_click=lambda: (asyncio.create_task(set_time(0.00002)), ui.notify('Time set to 20 µs')))
+                    ui.item('50', on_click=lambda: (asyncio.create_task(set_time(0.00005)), ui.notify('Time set to 50 µs')))
+                    ui.item('100', on_click=lambda: (asyncio.create_task(set_time(0.0001)), ui.notify('Time set to 100 µs')))
+                    ui.item('200', on_click=lambda: (asyncio.create_task(set_time(0.0002)), ui.notify('Time set to 200 µs')))
+                    ui.item('500', on_click=lambda: (asyncio.create_task(set_time(0.0005)), ui.notify('Time set to 500 µs')))
                 with ui.dropdown_button('ms', auto_close=True).props('style="text-transform:none;"'):
-                    ui.item('1', on_click=lambda: asyncio.create_task(set_time(0.001)))
-                    ui.item('2', on_click=lambda: asyncio.create_task(set_time(0.002)))
-                    ui.item('5', on_click=lambda: asyncio.create_task(set_time(0.005)))
-                    ui.item('10', on_click=lambda: asyncio.create_task(set_time(0.01)))
-                    ui.item('20', on_click=lambda: asyncio.create_task(set_time(0.02)))
-                    ui.item('50', on_click=lambda: asyncio.create_task(set_time(0.05)))
-                    ui.item('100', on_click=lambda: asyncio.create_task(set_time(0.1)))
-                    ui.item('200', on_click=lambda: asyncio.create_task(set_time(0.2)))
-                    ui.item('500', on_click=lambda: asyncio.create_task(set_time(0.5)))
+                    ui.item('1', on_click=lambda: (asyncio.create_task(set_time(0.001)), ui.notify('Time set to 1 ms')))
+                    ui.item('2', on_click=lambda: (asyncio.create_task(set_time(0.002)), ui.notify('Time set to 2 ms')))
+                    ui.item('5', on_click=lambda: (asyncio.create_task(set_time(0.005)), ui.notify('Time set to 5 ms')))
+                    ui.item('10', on_click=lambda: (asyncio.create_task(set_time(0.01)), ui.notify('Time set to 10 ms')))
+                    ui.item('20', on_click=lambda: (asyncio.create_task(set_time(0.02)), ui.notify('Time set to 20 ms')))
+                    ui.item('50', on_click=lambda: (asyncio.create_task(set_time(0.05)), ui.notify('Time set to 50 ms')))
+                    ui.item('100', on_click=lambda: (asyncio.create_task(set_time(0.1)), ui.notify('Time set to 100 ms')))
+                    ui.item('200', on_click=lambda: (asyncio.create_task(set_time(0.2)), ui.notify('Time set to 200 ms')))
+                    ui.item('500', on_click=lambda: (asyncio.create_task(set_time(0.5)), ui.notify('Time set to 500 ms')))
                 with ui.dropdown_button('s', auto_close=True).props('style="text-transform:none;"'):
-                    ui.item('1', on_click=lambda: asyncio.create_task(set_time(1)))
-                    ui.item('5', on_click=lambda: asyncio.create_task(set_time(2)))
-                    ui.item('5', on_click=lambda: asyncio.create_task(set_time(5)))
-                    ui.item('10', on_click=lambda: asyncio.create_task(set_time(10)))
-                    ui.item('20', on_click=lambda: asyncio.create_task(set_time(20)))
-                    ui.item('50', on_click=lambda: asyncio.create_task(set_time(50)))
+                    ui.item('1', on_click=lambda: (asyncio.create_task(set_time(1)), ui.notify('Time set to 1 s')))
+                    ui.item('2', on_click=lambda: (asyncio.create_task(set_time(2)), ui.notify('Time set to 2 s')))
+                    ui.item('5', on_click=lambda: (asyncio.create_task(set_time(5)), ui.notify('Time set to 5 s')))
+                    ui.item('10', on_click=lambda: (asyncio.create_task(set_time(10)), ui.notify('Time set to 10 s')))
+                    ui.item('20', on_click=lambda: (asyncio.create_task(set_time(20)), ui.notify('Time set to 20 s')))
+                    ui.item('50', on_click=lambda: (asyncio.create_task(set_time(50)), ui.notify('Time set to 50 s')))
 
             # Third row
             with ui.dropdown_button('Scale CH1', auto_close=False).props('style="text-transform:none;"').classes("button-size"):
                 with ui.dropdown_button('mV', auto_close=True).props('style="text-transform:none;"'):
-                    ui.item('1', on_click=lambda: asyncio.create_task(set_voltage(0.001,1)))
-                    ui.item('2', on_click=lambda: asyncio.create_task(set_voltage(0.002,1)))
-                    ui.item('5', on_click=lambda: asyncio.create_task(set_voltage(0.005,1)))
-                    ui.item('10', on_click=lambda: asyncio.create_task(set_voltage(0.01,1)))
-                    ui.item('20', on_click=lambda: asyncio.create_task(set_voltage(0.02,1)))
-                    ui.item('50', on_click=lambda: asyncio.create_task(set_voltage(0.05,1)))
-                    ui.item('100', on_click=lambda: asyncio.create_task(set_voltage(0.1,1)))
-                    ui.item('200', on_click=lambda: asyncio.create_task(set_voltage(0.2,1)))
-                    ui.item('500', on_click=lambda: asyncio.create_task(set_voltage(0.5,1)))
+                    ui.item('1', on_click=lambda: (asyncio.create_task(set_voltage(0.001,1)), ui.notify('CH1 Scale set to 1 mV')))
+                    ui.item('2', on_click=lambda: (asyncio.create_task(set_voltage(0.002,1)), ui.notify('CH1 Scale set to 2 mV')))
+                    ui.item('5', on_click=lambda: (asyncio.create_task(set_voltage(0.005,1)), ui.notify('CH1 Scale set to 5 mV')))
+                    ui.item('10', on_click=lambda: (asyncio.create_task(set_voltage(0.01,1)), ui.notify('CH1 Scale set to 10 mV')))
+                    ui.item('20', on_click=lambda: (asyncio.create_task(set_voltage(0.02,1)), ui.notify('CH1 Scale set to 20 mV')))
+                    ui.item('50', on_click=lambda: (asyncio.create_task(set_voltage(0.05,1)), ui.notify('CH1 Scale set to 50 mV')))
+                    ui.item('100', on_click=lambda: (asyncio.create_task(set_voltage(0.1,1)), ui.notify('CH1 Scale set to 100 mV')))
+                    ui.item('200', on_click=lambda: (asyncio.create_task(set_voltage(0.2,1)), ui.notify('CH1 Scale set to 200 mV')))
+                    ui.item('500', on_click=lambda: (asyncio.create_task(set_voltage(0.5,1)), ui.notify('CH1 Scale set to 500 mV')))
                 with ui.dropdown_button('V', auto_close=True).props('style="text-transform:none;"'):
-                    ui.item('1', on_click=lambda: asyncio.create_task(set_voltage(1,1)))
-                    ui.item('2', on_click=lambda: asyncio.create_task(set_voltage(2,1)))
-                    ui.item('5', on_click=lambda: asyncio.create_task(set_voltage(5,1)))
-                    ui.item('10', on_click=lambda: asyncio.create_task(set_voltage(10,1)))
+                    ui.item('1', on_click=lambda: (asyncio.create_task(set_voltage(1,1)), ui.notify('CH1 Scale set to 1 V')))
+                    ui.item('2', on_click=lambda: (asyncio.create_task(set_voltage(2,1)), ui.notify('CH1 Scale set to 2 V')))
+                    ui.item('5', on_click=lambda: (asyncio.create_task(set_voltage(5,1)), ui.notify('CH1 Scale set to 5 V')))
+                    ui.item('10', on_click=lambda: (asyncio.create_task(set_voltage(10,1)), ui.notify('CH1 Scale set to 10 V')))
 
             with ui.dropdown_button('Scale CH2', auto_close=False).props('style="text-transform:none;"').classes("button-size"):
                 with ui.dropdown_button('mV', auto_close=True).props('style="text-transform:none;"'):
-                    ui.item('1', on_click=lambda: asyncio.create_task(set_voltage(0.001,2)))
-                    ui.item('2', on_click=lambda: asyncio.create_task(set_voltage(0.002,2)))
-                    ui.item('5', on_click=lambda: asyncio.create_task(set_voltage(0.005,2)))
-                    ui.item('10', on_click=lambda: asyncio.create_task(set_voltage(0.01,2)))
-                    ui.item('20', on_click=lambda: asyncio.create_task(set_voltage(0.02,2)))
-                    ui.item('50', on_click=lambda: asyncio.create_task(set_voltage(0.05,2)))
-                    ui.item('100', on_click=lambda: asyncio.create_task(set_voltage(0.1,2)))
-                    ui.item('200', on_click=lambda: asyncio.create_task(set_voltage(0.2,2)))
-                    ui.item('500', on_click=lambda: asyncio.create_task(set_voltage(0.5,2)))
+                    ui.item('1', on_click=lambda: (asyncio.create_task(set_voltage(0.001,2)), ui.notify('CH2 Scale set to 1 mV')))
+                    ui.item('2', on_click=lambda: (asyncio.create_task(set_voltage(0.002,2)), ui.notify('CH2 Scale set to 2 mV')))
+                    ui.item('5', on_click=lambda: (asyncio.create_task(set_voltage(0.005,2)), ui.notify('CH2 Scale set to 5 mV')))
+                    ui.item('10', on_click=lambda: (asyncio.create_task(set_voltage(0.01,2)), ui.notify('CH2 Scale set to 10 mV')))
+                    ui.item('20', on_click=lambda: (asyncio.create_task(set_voltage(0.02,2)), ui.notify('CH2 Scale set to 20 mV')))
+                    ui.item('50', on_click=lambda: (asyncio.create_task(set_voltage(0.05,2)), ui.notify('CH2 Scale set to 50 mV')))
+                    ui.item('100', on_click=lambda: (asyncio.create_task(set_voltage(0.1,2)), ui.notify('CH2 Scale set to 100 mV')))
+                    ui.item('200', on_click=lambda: (asyncio.create_task(set_voltage(0.2,2)), ui.notify('CH2 Scale set to 200 mV')))
+                    ui.item('500', on_click=lambda: (asyncio.create_task(set_voltage(0.5,2)), ui.notify('CH2 Scale set to 500 mV')))
                 with ui.dropdown_button('V', auto_close=True).props('style="text-transform:none;"'):
-                    ui.item('1', on_click=lambda: asyncio.create_task(set_voltage(1,2)))
-                    ui.item('2', on_click=lambda: asyncio.create_task(set_voltage(2,2)))
-                    ui.item('5', on_click=lambda: asyncio.create_task(set_voltage(5,2)))
-                    ui.item('10', on_click=lambda: asyncio.create_task(set_voltage(10,2)))
+                    ui.item('1', on_click=lambda: (asyncio.create_task(set_voltage(1,2)), ui.notify('CH2 Scale set to 1 V')))
+                    ui.item('2', on_click=lambda: (asyncio.create_task(set_voltage(2,2)), ui.notify('CH2 Scale set to 2 V')))
+                    ui.item('5', on_click=lambda: (asyncio.create_task(set_voltage(5,2)), ui.notify('CH2 Scale set to 5 V')))
+                    ui.item('10', on_click=lambda: (asyncio.create_task(set_voltage(10,2)), ui.notify('CH2 Scale set to 10 V')))
 
             with ui.column():
                 ui.label('Time Offset').style('color: white; font-size: 0.8rem').classes("slider-size")
@@ -502,6 +512,8 @@ async def set_offset(offset):
             response = s.recv(1024)
             screen = float(response.decode().strip())*12
         await asyncio.to_thread(send_command_to_scope, f":TIMebase:MAIN:OFFSet {-screen/60*offset}")
+        with display_container:
+            ui.notify(f'Set Time offset to {convert_unit(-screen/60*offset)}s')
     except:
         print("Error setting time offset")
 
@@ -518,6 +530,8 @@ async def set_voltage_offset(offset, channel):
             response = s.recv(1024)
             range = float(response.decode().strip())
         await asyncio.to_thread(send_command_to_scope, f":CHANnel{channel}:OFFSet {-offset*range/40}")
+        with display_container:
+            ui.notify(f'Set CH{channel} offset to {convert_unit(-offset*range/40)}V')
     except:
         print("Error setting voltage offset")
 
@@ -539,6 +553,8 @@ async def set_trigger(trig):
             response = s.recv(1024)
             offset = float(response.decode().strip())
         await asyncio.to_thread(send_command_to_scope, f":TRIGger:EDGe:LEVel {-trig*range/40-offset}")
+        with display_container:
+            ui.notify(f'Set trigger to {convert_unit(-trig*range/40-offset)}V')
     except:
         print("Error setting trigger offset")
 
