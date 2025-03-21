@@ -21,14 +21,14 @@ ui.add_head_html('''
     background-color: grey !important;
     color: white !important;
   }
-  /* Classe aggiuntiva per uniformare la dimensione di pulsanti/label */
+  /* Additional class to standardize button/label sizes */
   .button-size {
     width: 100px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0; /* Per eliminare possibili margini interni */
+    margin: 0; /* To eliminate any potential internal margins */
   }
   .slider-size {
     width: 100px;
@@ -36,7 +36,7 @@ ui.add_head_html('''
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0; /* Per eliminare possibili margini interni */
+    margin: 0; /* To eliminate any potential internal margins */
   }
   .vslider-size {
     width: 100px;
@@ -44,7 +44,7 @@ ui.add_head_html('''
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0; /* Per eliminare possibili margini interni */
+    margin: 0; /* To eliminate any potential internal margins */
   }
 </style>
 ''')
@@ -149,7 +149,7 @@ def query_offset_state():
         s.sendall(command_screen.encode())
         response = s.recv(1024)
         screen = float(response.decode().strip())
-        s.sendall(command_offset.encode()) 
+        s.sendall(command_offset.encode())
         response = s.recv(1024)
         offset = float(response.decode().strip())
         return -offset/screen*5
@@ -253,8 +253,8 @@ display_container = ui.column().classes("q-pa-md").style("max-width: 1200px; mar
 display_container.visible = False
 
 with display_container:
-    # Primo blocco: riga con canvas a sinistra e griglia di pulsanti a destra
-    main_row = ui.row().classes("items-start")  # allineiamo in alto
+    # First block: row with canvas on the left and a grid of buttons on the right
+    main_row = ui.row().classes("items-start")  # align at the top
     with main_row:
         # Left side: Canvas container
         canvas_container = ui.column().style("flex: 1;")
@@ -264,13 +264,13 @@ with display_container:
                     style="display: block; background: #000;"></canvas>
             ''')
 
-        # Right side: Grid di pulsanti/label
-        with ui.grid(columns=3).classes("gap-5"):  # 3 colonne, 5 righe con i 15 elementi
-            # Prima riga
+        # Right side: Grid of buttons/labels
+        with ui.grid(columns=3).classes("gap-5"):  # 3 columns, 5 rows with 15 elements
+            # First row
             clear_button = ui.button("CLEAR").classes("button-size button-grey")
             auto_button = ui.button("AUTO").classes("button-size button-grey")
-            run_stop_button = ui.button("RUN/STOP").classes("button-size button-red")  # parte come STOP
-            # Seconda riga
+            run_stop_button = ui.button("RUN/STOP").classes("button-size button-red")  # starts as STOP
+            # Second row
             ch1_button = ui.button("CH1").classes("button-size button-grey")
             ch2_button = ui.button("CH2").classes("button-size button-grey")
             with ui.dropdown_button('Time', auto_close=False).props('style="text-transform:none;"').classes("button-size"):
@@ -310,7 +310,7 @@ with display_container:
                     ui.item('20', on_click=lambda: asyncio.create_task(set_time(20)))
                     ui.item('50', on_click=lambda: asyncio.create_task(set_time(50)))
 
-            # Terza riga
+            # Third row
             with ui.dropdown_button('Scale CH1', auto_close=False).props('style="text-transform:none;"').classes("button-size"):
                 with ui.dropdown_button('mV', auto_close=True).props('style="text-transform:none;"'):
                     ui.item('1', on_click=lambda: asyncio.create_task(set_voltage(0.001,1)))
@@ -327,7 +327,7 @@ with display_container:
                     ui.item('2', on_click=lambda: asyncio.create_task(set_voltage(2,1)))
                     ui.item('5', on_click=lambda: asyncio.create_task(set_voltage(5,1)))
                     ui.item('10', on_click=lambda: asyncio.create_task(set_voltage(10,1)))
-            
+
             with ui.dropdown_button('Scale CH2', auto_close=False).props('style="text-transform:none;"').classes("button-size"):
                 with ui.dropdown_button('mV', auto_close=True).props('style="text-transform:none;"'):
                     ui.item('1', on_click=lambda: asyncio.create_task(set_voltage(0.001,2)))
@@ -348,7 +348,7 @@ with display_container:
             with ui.column():
                 ui.label('Time Offset').style('color: white; font-size: 0.8rem').classes("slider-size")
                 offset_slider = ui.slider(min=-30, max=30, value=0, on_change=lambda e: asyncio.create_task(set_offset(e.value))).classes("slider-size")
-            # Quarta riga
+            # Fourth row
             with ui.column():
                 ui.label('CH1 VOffset').style('color: white; font-size: 0.8rem').classes("slider-size")
                 pos_ch1_slider = ui.slider(min=-20, max=20, value=0, on_change=lambda e: asyncio.create_task(set_voltage_offset(e.value, 1))).props('vertical').classes("vslider-size")
@@ -359,7 +359,7 @@ with display_container:
                 ui.label('Trigger').style('color: white; font-size: 0.8rem').classes("slider-size")
                 trig_slider = ui.slider(min=-30, max=30, value=0, on_change=lambda e: asyncio.create_task(set_trigger(e.value))).props('vertical').classes("vslider-size")
 
-    # Secondo blocco: etichetta di info strumentazione sotto, a piena larghezza
+    # Second block: instrument info label below, full width
     instrument_label = ui.label("").style("color: yellow; white-space: pre-line; margin-top: 20px;")
 
 # Loading overlay
@@ -422,18 +422,18 @@ async def on_connect():
     await update_channel_states()
 
     offset_slider.value = await asyncio.to_thread(query_offset_state)
-    offset_slider.update() 
+    offset_slider.update()
 
     pos_ch1_slider.value = await asyncio.to_thread(query_voltage_offset, 1)
     pos_ch1_slider.update()
-    
+
     pos_ch2_slider.value = await asyncio.to_thread(query_voltage_offset, 2)
     pos_ch2_slider.update()
-    
+
     trig_slider.value = await asyncio.to_thread(query_trigger)
     trig_slider.update()
-    
-    # Avvia un timer per aggiornare periodicamente il canvas
+
+    # Start a timer to periodically update the canvas
     with display_container:
         ui.timer(0.3, update_canvas)
 
@@ -587,7 +587,7 @@ async def toggle_channel(channel, button):
             except Exception as e:
                 print("Error turning CH2 on:", e)
 
-# Assegniamo gli handler ai pulsanti effettivi
+# Assign handlers to the actual buttons
 clear_button.on("click", lambda: asyncio.create_task(send_command(":CLEAR")))
 auto_button.on("click", lambda: asyncio.create_task(auto_action()))
 run_stop_button.on("click", lambda: asyncio.create_task(toggle_run_stop()))
