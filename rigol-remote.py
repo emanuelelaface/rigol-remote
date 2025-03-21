@@ -38,6 +38,36 @@ ui.add_head_html('''
     justify-content: center;
     margin: 0; /* To eliminate any potential internal margins */
   }
+  .filler-size {
+    width: 100px;
+    height: 33px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0; /* To eliminate any potential internal margins */
+}
+  .meas1-size {
+    width: 100px;
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0; /* To eliminate any potential internal margins */
+    background-color: #F9FC53;
+    padding: 15px 0;
+    color: black !important;
+  }
+  .meas2-size {
+    width: 100px;
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0; /* To eliminate any potential internal margins */
+    background-color: #55BAB9;
+    padding: 15px 0;
+    color: black !important;
+  }
   .vslider-size {
     width: 100px;
     height: 100px;
@@ -118,7 +148,15 @@ def convert_unit(value):
         return f'{value*1e6:.1f} µ'
     if abs(value) < 1:
         return f'{value*1e3:.1f} m'
-    return f'{value:.1f} '
+    if abs(value) < 1e3:
+        return f'{value:.1f} '
+    if abs(value) < 1e6:
+        return f'{value/1e3:.1f} k'
+    if abs(value) < 1e9:
+        return f'{value/1e6:.1f} M'
+    if abs(value) < 1e12:
+        return f'{value/1e9:.1f} G'
+    return '*** '
 
 def send_command_to_scope(command):
     """Sends a specific command to the oscilloscope."""
@@ -203,6 +241,26 @@ def query_trigger():
         trigger = float(response.decode().strip())
         return -(trigger+offset)/range*40
 
+def query_meas(item, channel, conv=True):
+    global selected_ip, selected_port
+    value = 0
+    command = f":MEASure:ITEM? {item},CHANnel{channel}\n"
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(5)
+        s.connect((selected_ip, selected_port))
+        s.sendall(command.encode())
+        response = s.recv(1024)
+        try:
+            if conv:
+                value = convert_unit(float(response.decode().strip()))
+            else:
+                value = f'{float(response.decode().strip()):.2f} '
+                if len(value) > 30:
+                    value = "*** "
+        except:
+            value = "*** "
+        return value
+
 async def update_channel_states():
     """Updates the channel states by querying the instrument and updates the channel buttons accordingly."""
     global channel1_state, channel2_state, ch1_button, ch2_button
@@ -267,6 +325,9 @@ with display_container:
     main_row = ui.row().classes("items-start")  # align at the top
     with main_row:
         # Left side: Canvas container
+        # Second block: instrument info label below, full width
+        instrument_label = ui.label("").style("color: yellow; white-space: pre-line; margin-top: 20px;")
+
         canvas_container = ui.column().style("flex: 1;")
         with canvas_container:
             ui.html('''
@@ -368,9 +429,50 @@ with display_container:
             with ui.column():
                 ui.label('Trigger').style('color: white; font-size: 0.8rem').classes("slider-size")
                 trig_slider = ui.slider(min=-30, max=30, value=0, on_change=lambda e: asyncio.create_task(set_trigger(e.value))).props('vertical').classes("vslider-size")
-
-    # Second block: instrument info label below, full width
-    instrument_label = ui.label("").style("color: yellow; white-space: pre-line; margin-top: 20px;")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("button-size")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("button-size")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("button-size")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("filler-size")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("filler-size")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("filler-size")
+            measure_button = ui.button("MEASURE").classes("button-size button-grey")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("button-size")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("button-size")
+        with ui.grid(columns=7).classes("gap-4"):  # 3 columns, 5 rows with 15 elements
+            ui.label('').style('color: white; font-size: 0.8rem').classes("slider-size")
+            with ui.column():
+                ui.label('CH1 Freq').style('color: white; font-size: 0.8rem').classes("slider-size")
+                meas_ch1_freq = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
+            with ui.column():
+                ui.label('CH1 Period').style('color: white; font-size: 0.8rem').classes("slider-size")
+                meas_ch1_period = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
+            with ui.column():
+                ui.label('CH1 V Min').style('color: white; font-size: 0.8rem').classes("slider-size")
+                meas_ch1_vmin = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
+            with ui.column():
+                ui.label('CH1 V Max').style('color: white; font-size: 0.8rem').classes("slider-size")
+                meas_ch1_vmax = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
+            with ui.column():
+                ui.label('CH1 +Duty').style('color: white; font-size: 0.8rem').classes("slider-size")
+                meas_ch1_pduty = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("slider-size")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("slider-size")
+            with ui.column():
+                ui.label('CH2 Freq').style('color: white; font-size: 0.8rem').classes("slider-size")
+                meas_ch2_freq = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
+            with ui.column():
+                ui.label('CH2 Period').style('color: white; font-size: 0.8rem').classes("slider-size")
+                meas_ch2_period = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
+            with ui.column():
+                ui.label('CH2 V Min').style('color: white; font-size: 0.8rem').classes("slider-size")
+                meas_ch2_vmin = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
+            with ui.column():
+                ui.label('CH2 V Max').style('color: white; font-size: 0.8rem').classes("slider-size")
+                meas_ch2_vmax = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
+            with ui.column():
+                ui.label('CH2 +Duty').style('color: white; font-size: 0.8rem').classes("slider-size")
+                meas_ch2_pduty = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
+            ui.label('').style('color: white; font-size: 0.8rem').classes("slider-size")
 
 # Loading overlay
 loading_overlay = ui.column().style(
@@ -471,7 +573,7 @@ async def update_canvas():
     }})();
     '''
     ui.run_javascript(js_code)
-
+    
 async def toggle_run_stop():
     """Toggles between RUN and STOP: if RUN, sends :STOP and updates button to red; otherwise sends :RUN and updates button to green."""
     global run_state, run_stop_button
@@ -491,6 +593,29 @@ async def toggle_run_stop():
             run_stop_button.update()
         except Exception as e:
             print("Error switching to RUN:", e)
+
+async def measurement():
+    with display_container:
+        meas_ch1_freq.set_text(str(await asyncio.to_thread(query_meas, 'FREQuency', 1))+'Hz')
+        meas_ch1_freq.update()
+        meas_ch1_period.set_text(str(await asyncio.to_thread(query_meas, 'PERiod', 1))+'s')
+        meas_ch1_period.update()
+        meas_ch1_vmin.set_text(str(await asyncio.to_thread(query_meas, 'VMIN', 1))+'V')
+        meas_ch1_vmin.update()
+        meas_ch1_vmax.set_text(str(await asyncio.to_thread(query_meas, 'VMAX', 1))+'V')
+        meas_ch1_vmax.update()
+        meas_ch1_pduty.set_text(str(await asyncio.to_thread(query_meas, 'PDUTy', 1, False)))
+        meas_ch1_pduty.update()
+        meas_ch2_freq.set_text(str(await asyncio.to_thread(query_meas, 'FREQuency', 2))+'Hz')
+        meas_ch2_freq.update()
+        meas_ch2_period.set_text(str(await asyncio.to_thread(query_meas, 'PERiod', 2))+'s')
+        meas_ch2_period.update()
+        meas_ch2_vmin.set_text(str(await asyncio.to_thread(query_meas, 'VMIN', 2))+'V')
+        meas_ch2_vmin.update()
+        meas_ch2_vmax.set_text(str(await asyncio.to_thread(query_meas, 'VMAX', 2))+'V')
+        meas_ch2_vmax.update()
+        meas_ch2_pduty.set_text(str(await asyncio.to_thread(query_meas, 'PDUTy', 2, False)))
+        meas_ch2_pduty.update()
 
 async def set_time(time):
     """Set time"""
@@ -609,6 +734,7 @@ auto_button.on("click", lambda: asyncio.create_task(auto_action()))
 run_stop_button.on("click", lambda: asyncio.create_task(toggle_run_stop()))
 ch1_button.on("click", lambda: asyncio.create_task(toggle_channel(1, ch1_button)))
 ch2_button.on("click", lambda: asyncio.create_task(toggle_channel(2, ch2_button)))
+measure_button.on("click", lambda: asyncio.create_task(measurement()))
 
 ui.run(title="Rigol Remote")
 
