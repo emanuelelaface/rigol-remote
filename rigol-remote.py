@@ -199,7 +199,7 @@ def send_command_to_scope(command):
     """Sends a specific command to the oscilloscope."""
     global selected_ip, selected_port
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.settimeout(10)
+        s.settimeout(30)
         s.connect((selected_ip, selected_port))
         s.sendall((command + "\n").encode())
 
@@ -817,5 +817,5 @@ ch1_button.on("click", lambda: asyncio.create_task(toggle_channel(1, ch1_button)
 ch2_button.on("click", lambda: asyncio.create_task(toggle_channel(2, ch2_button)))
 measure_button.on("click", lambda: asyncio.create_task(measurement()))
 
-ui.run(title="Rigol Remote")
+ui.run(title="Rigol Remote", port=12022)
 
