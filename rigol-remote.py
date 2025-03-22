@@ -690,7 +690,7 @@ async def set_offset(offset):
         elif offset == "-":
             curr_offset = curr_offset-screen_step
         else:
-            curr_offset = float(value)
+            curr_offset = float(offset)
             
         await asyncio.to_thread(send_command_to_scope, f":TIMebase:MAIN:OFFSet {curr_offset}")
         with display_container:
