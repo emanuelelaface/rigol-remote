@@ -9,6 +9,14 @@ from nicegui import ui
 ui.add_head_html('''
 <style>
   body { background-color: #343541; }
+  .button-ch1 {
+    background-color: #F9FC53 !important;
+    color: black !important;
+  }
+  .button-ch2 {
+    background-color: #00FFFF !important;
+    color: black !important;
+  }
   .button-green {
     background-color: green !important;
     color: white !important;
@@ -64,7 +72,7 @@ ui.add_head_html('''
     align-items: center;
     justify-content: center;
     margin: 0; /* To eliminate any potential internal margins */
-    background-color: #55BAB9;
+    background-color: #00FFFF;
     padding: 15px 0;
     color: black !important;
   }
@@ -76,6 +84,31 @@ ui.add_head_html('''
     justify-content: center;
     margin: 0; /* To eliminate any potential internal margins */
   }
+  .square-button {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    border: none;       /* Rimuove il bordo predefinito */
+    min-height: 0;       /* Annulla eventuali min-height imposti dal browser */
+    box-sizing: border-box;  /* Include padding e border nelle dimensioni totali */
+    color: black !important;
+  }
+  .middle-label .q-field__native {
+    width: 60px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0;
+    color: black;
+    font-size: 0.7rem;
+  }
+
 </style>
 ''')
 
@@ -90,6 +123,10 @@ channel2_state = False
 run_stop_button = None    # Will be assigned later
 ch1_button = None         # Will be assigned later
 ch2_button = None         # Will be assigned later
+
+yellow_rigol = "#F9FC53"
+blue_rigol = "#00FFFF"
+orange_rigol = "#E88632"
 
 def check_connection(ip, port):
     """Sends the *IDN? command to verify the connection and retrieve instrument information."""
@@ -162,7 +199,7 @@ def send_command_to_scope(command):
     """Sends a specific command to the oscilloscope."""
     global selected_ip, selected_port
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.settimeout(5)
+        s.settimeout(10)
         s.connect((selected_ip, selected_port))
         s.sendall((command + "\n").encode())
 
@@ -185,61 +222,57 @@ def query_channel_state(channel):
         state = response.decode().strip()
         return state == "1"
 
+async def set_offset_manual(event):
+    if event.args.get('key') == 'Enter':
+        await set_offset(offset_input.value)
+
+async def set_trigger_manual(event):
+    if event.args.get('key') == 'Enter':
+        await set_trigger(trigger_input.value)
+
+async def set_ch1_voltage_offset_manual(event):
+    if event.args.get('key') == 'Enter':
+        await set_voltage_offset(pos_ch1_input.value, 1)
+
+async def set_ch2_voltage_offset_manual(event):
+    if event.args.get('key') == 'Enter':
+        await set_voltage_offset(pos_ch2_input.value, 2)
+
 def query_offset_state():
     global selected_ip, selected_port
-    screen = 0
     offset = 0
-    command_screen = ":TIMEbase:MAIN:SCALe?\n"
     command_offset = ":TIMebase:MAIN:OFFSet?\n"
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.settimeout(5)
         s.connect((selected_ip, selected_port))
-        s.sendall(command_screen.encode())
-        response = s.recv(1024)
-        screen = float(response.decode().strip())
         s.sendall(command_offset.encode())
         response = s.recv(1024)
         offset = float(response.decode().strip())
-        return -offset/screen*5
+        return offset
 
 def query_voltage_offset(channel):
     global selected_ip, selected_port
-    range = 0
     offset = 0
-    command_range = f":CHANnel{channel}:RANGe?\n"
     command_offset = f":CHANnel{channel}:OFFSet?\n"
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.settimeout(5)
         s.connect((selected_ip, selected_port))
-        s.sendall(command_range.encode())
-        response = s.recv(1024)
-        range = float(response.decode().strip())
         s.sendall(command_offset.encode())
         response = s.recv(1024)
         offset = float(response.decode().strip())
-        return -offset/range*40
+        return offset
 
 def query_trigger():
     global selected_ip, selected_port
-    range = 0
-    offset = 0
     trigger = 0
-    command_range = ":CHANnel1:RANGe?\n"
-    command_offset = ":CHANnel1:OFFSet?\n"
     command_trigger = ":TRIGger:EDGe:LEVel?\n"
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.settimeout(5)
         s.connect((selected_ip, selected_port))
-        s.sendall(command_range.encode())
-        response = s.recv(1024)
-        range = float(response.decode().strip())
-        s.sendall(command_offset.encode())
-        response = s.recv(1024)
-        offset = float(response.decode().strip())
         s.sendall(command_trigger.encode())
         response = s.recv(1024)
         trigger = float(response.decode().strip())
-        return -(trigger+offset)/range*40
+        return trigger
 
 def query_meas(item, channel, conv=True):
     global selected_ip, selected_port
@@ -269,13 +302,13 @@ async def update_channel_states():
     channel1_state = new_state1
     channel2_state = new_state2
     if channel1_state:
-        ch1_button.props['class'] = "button-size button-green"
+        ch1_button.props['class'] = "button-size button-ch1"
     else:
         ch1_button.props['class'] = "button-size button-grey"
     ch1_button.update()
 
     if channel2_state:
-        ch2_button.props['class'] = "button-size button-green"
+        ch2_button.props['class'] = "button-size button-ch2"
     else:
         ch2_button.props['class'] = "button-size button-grey"
     ch2_button.update()
@@ -293,14 +326,15 @@ async def auto_action():
         run_state = True
         run_stop_button.props['class'] = "button-size button-green"
         run_stop_button.update()
-        offset_slider.value = 0
-        offset_slider.update()
-        pos_ch1_slider.value = await asyncio.to_thread(query_voltage_offset, 1)
-        pos_ch1_slider.update()
-        pos_ch2_slider.value = await asyncio.to_thread(query_voltage_offset, 2)
-        pos_ch2_slider.update()
-        trig_slider.value = await asyncio.to_thread(query_trigger)
-        trig_slider.update()
+        val = await asyncio.to_thread(query_voltage_offset, 1)
+        pos_ch1_input.value = convert_unit(val)+'V'
+        pos_ch1_input.update()
+        val = await asyncio.to_thread(query_voltage_offset, 2)
+        pos_ch2_input.value = convert_unit(val)+'V'
+        pos_ch2_input.update()
+        val = await asyncio.to_thread(query_trigger)
+        trigger_input.value = convert_unit(val)+'V'
+        trigger_input.update()
 
     except Exception as e:
         print("Error sending :AUToscale:", e)
@@ -344,8 +378,8 @@ with display_container:
             # Second row
             ch1_button = ui.button("CH1").classes("button-size button-grey")
             ch2_button = ui.button("CH2").classes("button-size button-grey")
-            with ui.dropdown_button('Time', auto_close=False).props('style="text-transform:none;"').classes("button-size"):
-                with ui.dropdown_button('ns', auto_close=True).props('style="text-transform:none;"'):
+            with ui.dropdown_button('Time', auto_close=False).props(f'style="text-transform:none; color: black !important; background-color: {orange_rigol} !important;"').classes("button-size"):
+                with ui.dropdown_button('ns', auto_close=True).props(f'style="text-transform:none; color: black !important; background-color: {orange_rigol} !important;"'):
                     ui.item('5', on_click=lambda: (asyncio.create_task(set_time(0.000000005)), ui.notify('Time set to 5 ns')))
                     ui.item('10', on_click=lambda: (asyncio.create_task(set_time(0.00000001)), ui.notify('Time set to 10 ns')))
                     ui.item('20', on_click=lambda: (asyncio.create_task(set_time(0.00000002)), ui.notify('Time set to 20 ns')))
@@ -353,7 +387,7 @@ with display_container:
                     ui.item('100', on_click=lambda: (asyncio.create_task(set_time(0.0000001)), ui.notify('Time set to 100 ns')))
                     ui.item('200', on_click=lambda: (asyncio.create_task(set_time(0.0000002)), ui.notify('Time set to 200 ns')))
                     ui.item('500', on_click=lambda: (asyncio.create_task(set_time(0.0000005)), ui.notify('Time set to 500 ns')))
-                with ui.dropdown_button('µs', auto_close=True).props('style="text-transform:none;"'):
+                with ui.dropdown_button('µs', auto_close=True).props(f'style="text-transform:none; color: black !important; background-color: {orange_rigol} !important;"'):
                     ui.item('1', on_click=lambda: (asyncio.create_task(set_time(0.000001)), ui.notify('Time set to 1 µs')))
                     ui.item('2', on_click=lambda: (asyncio.create_task(set_time(0.000002)), ui.notify('Time set to 2 µs')))
                     ui.item('5', on_click=lambda: (asyncio.create_task(set_time(0.000005)), ui.notify('Time set to 5 µs')))
@@ -363,7 +397,7 @@ with display_container:
                     ui.item('100', on_click=lambda: (asyncio.create_task(set_time(0.0001)), ui.notify('Time set to 100 µs')))
                     ui.item('200', on_click=lambda: (asyncio.create_task(set_time(0.0002)), ui.notify('Time set to 200 µs')))
                     ui.item('500', on_click=lambda: (asyncio.create_task(set_time(0.0005)), ui.notify('Time set to 500 µs')))
-                with ui.dropdown_button('ms', auto_close=True).props('style="text-transform:none;"'):
+                with ui.dropdown_button('ms', auto_close=True).props(f'style="text-transform:none; color: black !important; background-color: {orange_rigol} !important;"'):
                     ui.item('1', on_click=lambda: (asyncio.create_task(set_time(0.001)), ui.notify('Time set to 1 ms')))
                     ui.item('2', on_click=lambda: (asyncio.create_task(set_time(0.002)), ui.notify('Time set to 2 ms')))
                     ui.item('5', on_click=lambda: (asyncio.create_task(set_time(0.005)), ui.notify('Time set to 5 ms')))
@@ -373,7 +407,7 @@ with display_container:
                     ui.item('100', on_click=lambda: (asyncio.create_task(set_time(0.1)), ui.notify('Time set to 100 ms')))
                     ui.item('200', on_click=lambda: (asyncio.create_task(set_time(0.2)), ui.notify('Time set to 200 ms')))
                     ui.item('500', on_click=lambda: (asyncio.create_task(set_time(0.5)), ui.notify('Time set to 500 ms')))
-                with ui.dropdown_button('s', auto_close=True).props('style="text-transform:none;"'):
+                with ui.dropdown_button('s', auto_close=True).props(f'style="text-transform:none; color: black !important; background-color: {orange_rigol} !important;"'):
                     ui.item('1', on_click=lambda: (asyncio.create_task(set_time(1)), ui.notify('Time set to 1 s')))
                     ui.item('2', on_click=lambda: (asyncio.create_task(set_time(2)), ui.notify('Time set to 2 s')))
                     ui.item('5', on_click=lambda: (asyncio.create_task(set_time(5)), ui.notify('Time set to 5 s')))
@@ -382,8 +416,8 @@ with display_container:
                     ui.item('50', on_click=lambda: (asyncio.create_task(set_time(50)), ui.notify('Time set to 50 s')))
 
             # Third row
-            with ui.dropdown_button('Scale CH1', auto_close=False).props('style="text-transform:none;"').classes("button-size"):
-                with ui.dropdown_button('mV', auto_close=True).props('style="text-transform:none;"'):
+            with ui.dropdown_button('Scale CH1', auto_close=False).props(f'style="text-transform:none; color: black !important; background-color: {yellow_rigol} !important; padding-right: 0px;"').classes("button-size"):
+                with ui.dropdown_button('mV', auto_close=True).props(f'style="text-transform:none; color: black !important; background-color: {yellow_rigol} !important;"'):
                     ui.item('1', on_click=lambda: (asyncio.create_task(set_voltage(0.001,1)), ui.notify('CH1 Scale set to 1 mV')))
                     ui.item('2', on_click=lambda: (asyncio.create_task(set_voltage(0.002,1)), ui.notify('CH1 Scale set to 2 mV')))
                     ui.item('5', on_click=lambda: (asyncio.create_task(set_voltage(0.005,1)), ui.notify('CH1 Scale set to 5 mV')))
@@ -393,14 +427,14 @@ with display_container:
                     ui.item('100', on_click=lambda: (asyncio.create_task(set_voltage(0.1,1)), ui.notify('CH1 Scale set to 100 mV')))
                     ui.item('200', on_click=lambda: (asyncio.create_task(set_voltage(0.2,1)), ui.notify('CH1 Scale set to 200 mV')))
                     ui.item('500', on_click=lambda: (asyncio.create_task(set_voltage(0.5,1)), ui.notify('CH1 Scale set to 500 mV')))
-                with ui.dropdown_button('V', auto_close=True).props('style="text-transform:none;"'):
+                with ui.dropdown_button('V', auto_close=True).props(f'style="text-transform:none; color: black !important; background-color: {yellow_rigol} !important;"'):
                     ui.item('1', on_click=lambda: (asyncio.create_task(set_voltage(1,1)), ui.notify('CH1 Scale set to 1 V')))
                     ui.item('2', on_click=lambda: (asyncio.create_task(set_voltage(2,1)), ui.notify('CH1 Scale set to 2 V')))
                     ui.item('5', on_click=lambda: (asyncio.create_task(set_voltage(5,1)), ui.notify('CH1 Scale set to 5 V')))
                     ui.item('10', on_click=lambda: (asyncio.create_task(set_voltage(10,1)), ui.notify('CH1 Scale set to 10 V')))
 
-            with ui.dropdown_button('Scale CH2', auto_close=False).props('style="text-transform:none;"').classes("button-size"):
-                with ui.dropdown_button('mV', auto_close=True).props('style="text-transform:none;"'):
+            with ui.dropdown_button('Scale CH2', auto_close=False).props(f'style="text-transform:none; color: black !important; background-color: {blue_rigol} !important; padding-right: 0px;"').classes("button-size"):
+                with ui.dropdown_button('mV', auto_close=True).props(f'style="text-transform:none; color: black !important; background-color: {blue_rigol} !important;"'):
                     ui.item('1', on_click=lambda: (asyncio.create_task(set_voltage(0.001,2)), ui.notify('CH2 Scale set to 1 mV')))
                     ui.item('2', on_click=lambda: (asyncio.create_task(set_voltage(0.002,2)), ui.notify('CH2 Scale set to 2 mV')))
                     ui.item('5', on_click=lambda: (asyncio.create_task(set_voltage(0.005,2)), ui.notify('CH2 Scale set to 5 mV')))
@@ -410,69 +444,75 @@ with display_container:
                     ui.item('100', on_click=lambda: (asyncio.create_task(set_voltage(0.1,2)), ui.notify('CH2 Scale set to 100 mV')))
                     ui.item('200', on_click=lambda: (asyncio.create_task(set_voltage(0.2,2)), ui.notify('CH2 Scale set to 200 mV')))
                     ui.item('500', on_click=lambda: (asyncio.create_task(set_voltage(0.5,2)), ui.notify('CH2 Scale set to 500 mV')))
-                with ui.dropdown_button('V', auto_close=True).props('style="text-transform:none;"'):
+                with ui.dropdown_button('V', auto_close=True).props(f'style="text-transform:none; color: black !important; background-color: {blue_rigol} !important;"'):
                     ui.item('1', on_click=lambda: (asyncio.create_task(set_voltage(1,2)), ui.notify('CH2 Scale set to 1 V')))
                     ui.item('2', on_click=lambda: (asyncio.create_task(set_voltage(2,2)), ui.notify('CH2 Scale set to 2 V')))
                     ui.item('5', on_click=lambda: (asyncio.create_task(set_voltage(5,2)), ui.notify('CH2 Scale set to 5 V')))
                     ui.item('10', on_click=lambda: (asyncio.create_task(set_voltage(10,2)), ui.notify('CH2 Scale set to 10 V')))
 
-            with ui.column():
-                ui.label('Time Offset').style('color: white; font-size: 0.8rem').classes("slider-size")
-                offset_slider = ui.slider(min=-30, max=30, value=0, on_change=lambda e: asyncio.create_task(set_offset(e.value))).classes("slider-size")
+            with ui.column().style(f"gap: 10px; background-color: {orange_rigol}; border-radius: 4px; height: 40px;"):
+                ui.label('Time Offset').style('color: black; font-size: 0.8rem').classes("slider-size pt-2")
+                with ui.row().style("gap: 0"):
+                    ui.button('-', on_click=lambda: (asyncio.create_task(set_offset('-')))).style(f"background-color: {orange_rigol} !important;").classes("square-button")
+                    offset_input = ui.input(value="").classes("middle-label").props('borderless').tooltip('Type time offset in seconds without unit')
+                    offset_input.on('keyup', set_offset_manual)
+                    ui.button('+', on_click=lambda: (asyncio.create_task(set_offset('+')))).style(f"background-color: {orange_rigol} !important;").classes("square-button")
             # Fourth row
-            with ui.column():
-                ui.label('CH1 VOffset').style('color: white; font-size: 0.8rem').classes("slider-size")
-                pos_ch1_slider = ui.slider(min=-20, max=20, value=0, on_change=lambda e: asyncio.create_task(set_voltage_offset(e.value, 1))).props('vertical').classes("vslider-size")
-            with ui.column():
-                ui.label('CH2 VOffset').style('color: white; font-size: 0.8rem').classes("slider-size")
-                pos_ch2_slider = ui.slider(min=-20, max=20, value=0, on_change=lambda e: asyncio.create_task(set_voltage_offset(e.value, 2))).props('vertical').classes("vslider-size")
-            with ui.column():
-                ui.label('Trigger').style('color: white; font-size: 0.8rem').classes("slider-size")
-                trig_slider = ui.slider(min=-30, max=30, value=0, on_change=lambda e: asyncio.create_task(set_trigger(e.value))).props('vertical').classes("vslider-size")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("button-size")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("button-size")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("button-size")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("filler-size")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("filler-size")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("filler-size")
+            with ui.column().style(f"gap: 10px; background-color: {yellow_rigol}; border-radius: 4px; height: 40px;"):
+                ui.label('CH1 VOffset').style('color: black; font-size: 0.8rem').classes("slider-size pt-2")
+                with ui.row().style("gap: 0"):
+                    ui.button('-', on_click=lambda: (asyncio.create_task(set_voltage_offset('-', 1)))).style(f"background-color: {yellow_rigol} !important;").classes("square-button")
+                    pos_ch1_input = ui.input(value="").classes("middle-label").props('borderless').tooltip('Type voltage offset in volts without unit')
+                    pos_ch1_input.on('keyup', set_ch1_voltage_offset_manual)
+                    ui.button('+', on_click=lambda: (asyncio.create_task(set_voltage_offset('+', 1)))).style(f"background-color: {yellow_rigol} !important;").classes("square-button")
+            with ui.column().style(f"gap: 10px; background-color: {blue_rigol}; border-radius: 4px; height: 40px;"):
+                ui.label('CH2 VOffset').style('color: black; font-size: 0.8rem').classes("slider-size pt-2")
+                with ui.row().style("gap: 0"):
+                    ui.button('-', on_click=lambda: (asyncio.create_task(set_voltage_offset('-', 2)))).style(f"background-color: {blue_rigol} !important;").classes("square-button")
+                    pos_ch2_input = ui.input(value="").classes("middle-label").props('borderless').tooltip('Type voltage offset in volts without unit')
+                    pos_ch2_input.on('keyup', set_ch2_voltage_offset_manual)
+                    ui.button('+', on_click=lambda: (asyncio.create_task(set_voltage_offset('+', 2)))).style(f"background-color: {blue_rigol} !important;").classes("square-button")
+            with ui.column().style(f"gap: 10px; background-color: {orange_rigol}; border-radius: 4px; height: 40px;"):
+                ui.label('Trigger').style('color: black; font-size: 0.8rem').classes("slider-size pt-2")
+                with ui.row().style("gap: 0"):
+                    ui.button('-', on_click=lambda: (asyncio.create_task(set_trigger('-')))).style(f"background-color: {orange_rigol} !important;").classes("square-button")
+                    trigger_input = ui.input(value="").classes("middle-label").props('borderless').tooltip('Type voltage offset in volts without unit')
+                    trigger_input.on('keyup', set_trigger_manual)
+                    ui.button('+', on_click=lambda: (asyncio.create_task(set_trigger('+')))).style(f"background-color: {orange_rigol} !important;").classes("square-button")
+        with ui.row().classes('items-center').style('gap: 136px;'):
+            with ui.grid(columns=5).classes("gap-4"):  
+                #ui.label('').style('color: white; font-size: 0.8rem').classes("slider-size")
+                with ui.column():
+                    ui.label('CH1 Freq').style('color: white; font-size: 0.8rem').classes("slider-size")
+                    meas_ch1_freq = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
+                with ui.column():
+                    ui.label('CH1 Period').style('color: white; font-size: 0.8rem').classes("slider-size")
+                    meas_ch1_period = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
+                with ui.column():
+                    ui.label('CH1 V Min').style('color: white; font-size: 0.8rem').classes("slider-size")
+                    meas_ch1_vmin = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
+                with ui.column():
+                    ui.label('CH1 V Max').style('color: white; font-size: 0.8rem').classes("slider-size")
+                    meas_ch1_vmax = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
+                with ui.column():
+                    ui.label('CH1 +Duty').style('color: white; font-size: 0.8rem').classes("slider-size")
+                    meas_ch1_pduty = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
+                with ui.column():
+                    ui.label('CH2 Freq').style('color: white; font-size: 0.8rem').classes("slider-size")
+                    meas_ch2_freq = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
+                with ui.column():
+                    ui.label('CH2 Period').style('color: white; font-size: 0.8rem').classes("slider-size")
+                    meas_ch2_period = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
+                with ui.column():
+                    ui.label('CH2 V Min').style('color: white; font-size: 0.8rem').classes("slider-size")
+                    meas_ch2_vmin = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
+                with ui.column():
+                    ui.label('CH2 V Max').style('color: white; font-size: 0.8rem').classes("slider-size")
+                    meas_ch2_vmax = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
+                with ui.column():
+                    ui.label('CH2 +Duty').style('color: white; font-size: 0.8rem').classes("slider-size")
+                    meas_ch2_pduty = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
             measure_button = ui.button("MEASURE").classes("button-size button-grey")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("button-size")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("button-size")
-        with ui.grid(columns=7).classes("gap-4"):  # 3 columns, 5 rows with 15 elements
-            ui.label('').style('color: white; font-size: 0.8rem').classes("slider-size")
-            with ui.column():
-                ui.label('CH1 Freq').style('color: white; font-size: 0.8rem').classes("slider-size")
-                meas_ch1_freq = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
-            with ui.column():
-                ui.label('CH1 Period').style('color: white; font-size: 0.8rem').classes("slider-size")
-                meas_ch1_period = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
-            with ui.column():
-                ui.label('CH1 V Min').style('color: white; font-size: 0.8rem').classes("slider-size")
-                meas_ch1_vmin = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
-            with ui.column():
-                ui.label('CH1 V Max').style('color: white; font-size: 0.8rem').classes("slider-size")
-                meas_ch1_vmax = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
-            with ui.column():
-                ui.label('CH1 +Duty').style('color: white; font-size: 0.8rem').classes("slider-size")
-                meas_ch1_pduty = ui.label('').style('color: white; font-size: 0.8rem').classes("meas1-size")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("slider-size")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("slider-size")
-            with ui.column():
-                ui.label('CH2 Freq').style('color: white; font-size: 0.8rem').classes("slider-size")
-                meas_ch2_freq = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
-            with ui.column():
-                ui.label('CH2 Period').style('color: white; font-size: 0.8rem').classes("slider-size")
-                meas_ch2_period = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
-            with ui.column():
-                ui.label('CH2 V Min').style('color: white; font-size: 0.8rem').classes("slider-size")
-                meas_ch2_vmin = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
-            with ui.column():
-                ui.label('CH2 V Max').style('color: white; font-size: 0.8rem').classes("slider-size")
-                meas_ch2_vmax = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
-            with ui.column():
-                ui.label('CH2 +Duty').style('color: white; font-size: 0.8rem').classes("slider-size")
-                meas_ch2_pduty = ui.label('').style('color: white; font-size: 0.8rem').classes("meas2-size")
-            ui.label('').style('color: white; font-size: 0.8rem').classes("slider-size")
 
 # Loading overlay
 loading_overlay = ui.column().style(
@@ -533,17 +573,20 @@ async def on_connect():
     # Query channel states at startup.
     await update_channel_states()
 
-    offset_slider.value = await asyncio.to_thread(query_offset_state)
-    offset_slider.update()
+    val = await asyncio.to_thread(query_voltage_offset, 1)
+    pos_ch1_input.value = convert_unit(val)+'V'
+    pos_ch1_input.update()
 
-    pos_ch1_slider.value = await asyncio.to_thread(query_voltage_offset, 1)
-    pos_ch1_slider.update()
+    val = await asyncio.to_thread(query_voltage_offset, 2)
+    pos_ch2_input.value = convert_unit(val)+'V'
+    pos_ch2_input.update()
 
-    pos_ch2_slider.value = await asyncio.to_thread(query_voltage_offset, 2)
-    pos_ch2_slider.update()
+    val = await asyncio.to_thread(query_trigger)
+    trigger_input.value = convert_unit(val)+'V'
+    trigger_input.update()
 
-    trig_slider.value = await asyncio.to_thread(query_trigger)
-    trig_slider.update()
+    offset_input.value = convert_unit(await asyncio.to_thread(query_offset_state))+'s'
+    offset_input.update()
 
     # Start a timer to periodically update the canvas
     with display_container:
@@ -629,16 +672,30 @@ async def set_offset(offset):
     global selected_ip, selected_port
     try:
         screen = 0
-        command = ":TIMEbase:MAIN:SCALe?\n"
+        curr_offset = 0
+        command_screen = ":TIMEbase:MAIN:SCALe?\n"
+        command_offset = ":TIMebase:MAIN:OFFSet?\n"
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.settimeout(5)
             s.connect((selected_ip, selected_port))
-            s.sendall(command.encode())
+            s.sendall(command_screen.encode())
             response = s.recv(1024)
-            screen = float(response.decode().strip())*12
-        await asyncio.to_thread(send_command_to_scope, f":TIMebase:MAIN:OFFSet {-screen/60*offset}")
+            screen = float(response.decode().strip())
+            s.sendall(command_offset.encode())
+            response = s.recv(1024)
+            curr_offset = float(response.decode().strip())
+        screen_step = screen/5 
+        if offset == "+":
+            curr_offset = curr_offset+screen_step
+        elif offset == "-":
+            curr_offset = curr_offset-screen_step
+        else:
+            curr_offset = float(value)
+            
+        await asyncio.to_thread(send_command_to_scope, f":TIMebase:MAIN:OFFSet {curr_offset}")
         with display_container:
-            ui.notify(f'Set Time offset to {convert_unit(-screen/60*offset)}s')
+            offset_input.value = (str(convert_unit(curr_offset))+'s')
+            offset_input.update()
     except:
         print("Error setting time offset")
 
@@ -646,17 +703,33 @@ async def set_voltage_offset(offset, channel):
     """Set voltage offset per channel"""
     global selected_ip, selected_port
     try:
-        range = 0
-        command = f":CHANnel{channel}:RANGe?\n"
+        scale = 0
+        curr_offset = 0
+        command_scale = f":CHANnel{channel}:SCALe?\n"
+        command_offset = f":CHANnel{channel}:OFFSet?\n"
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.settimeout(5)
             s.connect((selected_ip, selected_port))
-            s.sendall(command.encode())
+            s.sendall(command_scale.encode())
             response = s.recv(1024)
-            range = float(response.decode().strip())
-        await asyncio.to_thread(send_command_to_scope, f":CHANnel{channel}:OFFSet {-offset*range/40}")
+            scale = float(response.decode().strip())
+            s.sendall(command_offset.encode())
+            response = s.recv(1024)
+            curr_offset = float(response.decode().strip())
+        if offset == '+':
+            curr_offset = curr_offset + scale/5
+        elif offset == '-':
+            curr_offset = curr_offset - scale/5
+        else:
+            curr_offset = float(offset) 
+        await asyncio.to_thread(send_command_to_scope, f":CHANnel{channel}:OFFSet {curr_offset}")
         with display_container:
-            ui.notify(f'Set CH{channel} offset to {convert_unit(-offset*range/40)}V')
+            if channel == 1:
+                pos_ch1_input.value = str(convert_unit(curr_offset))+'V'
+                pos_ch1_input.update()
+            if channel == 2:
+                pos_ch2_input.value = str(convert_unit(curr_offset))+'V'
+                pos_ch2_input.update()
     except:
         print("Error setting voltage offset")
 
@@ -664,22 +737,30 @@ async def set_trigger(trig):
     """Set trigger value"""
     global selected_ip, selected_port
     try:
-        range = 0
-        offset = 0
-        command_range = ":CHANnel1:RANGe?\n"
-        command_offset = ":CHANnel1:OFFSet?\n"
+        scale = 0
+        curr_trigger = 0
+        command_scale = ":CHANnel1:SCALe?\n"
+        command_trigger = ":TRIGger:EDGe:LEVel?\n"
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.settimeout(5)
             s.connect((selected_ip, selected_port))
-            s.sendall(command_range.encode())
+            s.sendall(command_scale.encode())
             response = s.recv(1024)
-            range = float(response.decode().strip())
-            s.sendall(command_offset.encode())
+            scale = float(response.decode().strip())
+            s.sendall(command_trigger.encode())
             response = s.recv(1024)
-            offset = float(response.decode().strip())
-        await asyncio.to_thread(send_command_to_scope, f":TRIGger:EDGe:LEVel {-trig*range/40-offset}")
+            curr_trigger = float(response.decode().strip())
+        if trig == '+':
+            curr_trigger = curr_trigger + scale/5
+        elif trig == '-':
+            curr_trigger = curr_trigger - scale/5
+        else:
+            curr_trigger = float(trig) 
+
+        await asyncio.to_thread(send_command_to_scope, f":TRIGger:EDGe:LEVel {curr_trigger}")
         with display_container:
-            ui.notify(f'Set trigger to {convert_unit(-trig*range/40-offset)}V')
+            trigger_input.value = str(convert_unit(curr_trigger))+'V'
+            trigger_input.update()
     except:
         print("Error setting trigger offset")
 
@@ -706,7 +787,7 @@ async def toggle_channel(channel, button):
             try:
                 await asyncio.to_thread(send_command_to_scope, ":CHANnel1:DISPlay ON")
                 channel1_state = True
-                button.props['class'] = "button-size button-green"
+                button.props['class'] = "button-size button-ch1"
                 button.update()
             except Exception as e:
                 print("Error turning CH1 on:", e)
@@ -723,7 +804,7 @@ async def toggle_channel(channel, button):
             try:
                 await asyncio.to_thread(send_command_to_scope, ":CHANnel2:DISPlay ON")
                 channel2_state = True
-                button.props['class'] = "button-size button-green"
+                button.props['class'] = "button-size button-ch2"
                 button.update()
             except Exception as e:
                 print("Error turning CH2 on:", e)
