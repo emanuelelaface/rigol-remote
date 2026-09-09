@@ -1,4 +1,4 @@
-import {COLORS,TITLES,MEASUREMENTS,channelUnit,engineering,format,buildPanel,updateFields} from './controls.js';
+import {COLORS,MATH_COLOR,TITLES,MEASUREMENTS,channelUnit,mathUnit,engineering,format,buildPanel,updateFields} from './controls.js';
 import {ScopePlot} from './plot.js';
 
 const $=selector=>document.querySelector(selector), $$=selector=>[...document.querySelectorAll(selector)];
@@ -36,7 +36,6 @@ function command(value,readback){
    const result=await api({action:'command',command:value});
    if(result&&typeof result==='object'&&result.binary){const bytes=Uint8Array.from(atob(result.binary),c=>c.charCodeAt(0));saveBlob(new Blob([bytes]),'rigol-response.bin');log(value,`${result.length} bytes downloaded`);}
    else log(value,result);
-   if(readback){await api({action:'read',fields:[readback]});}
    return result;
   }catch(error){log(value,error.message,true);throw error;}
   finally{commandBusy=false;updateDisabled();updateFields($('#control-panel'),state);}
@@ -57,9 +56,15 @@ function renderChannels(){
   const detail=E('span','channel-detail');detail.append(E('strong','',format(state.values[`:CHAN${ch}:SCAL`],channelUnit(state,ch))+' / div'),E('small','',`${state.values[`:CHAN${ch}:COUP`]||'—'}  ·  ${state.values[`:CHAN${ch}:PROB`]?Number(state.values[`:CHAN${ch}:PROB`])+'× probe':'—'}`));
   button.append(E('span','channel-number',String(ch)),detail);button.onclick=()=>{showPanel('vertical');const cards=$$('#control-panel .control-section');cards[ch-1]?.scrollIntoView({block:'nearest',behavior:'smooth'});};strip.append(button);
  }
+ if(['1','ON'].includes(state.values[':MATH:DISP'])){
+  const button=E('button','channel-chip');button.style.setProperty('--channel-color',MATH_COLOR);button.title='Open math controls';
+  const detail=E('span','channel-detail');detail.append(E('strong','',format(state.values[':MATH:SCAL'],mathUnit(state))+' / div'),E('small','',state.values[':MATH:OPER']||'MATH'));
+  button.append(E('span','channel-number','M'),detail);button.onclick=()=>showPanel('math');strip.append(button);
+ }
 }
 function applyState(next){
  const wasConnected=state.connected;state={...state,...next,values:next.values||state.values};
+ plot.setInstrumentState(state);
  const connected=state.connected,idn=state.idn?.split(',')||[],newModel=idn[1]||'';
  $('#connection-dot').className='status-dot'+(connected?' connected':'')+(state.demo?' demo':'');
  $('#connection-label').textContent=connected?(state.demo?'Demo instrument':`${state.host}:${state.port}`):'Connect instrument';
@@ -78,6 +83,7 @@ function applyState(next){
  if(previousTrigger&&previousTrigger!==state.values[':TRIG:MODE']&&panel==='trigger')showPanel('trigger');previousTrigger=state.values[':TRIG:MODE'];
  $('#waveform-view').classList.toggle('selected',state.mode==='waveform');$('#screen-view').classList.toggle('selected',state.mode==='screen');
  const screenMode=state.mode==='screen';$('#screen-image').hidden=!screenMode||!connected;for(const n of [$('#trace-canvas'),$('#grid-canvas'),$('#overlay-canvas')])n.hidden=screenMode;
+ plot.setDisplayMode(screenMode);
  $('#cursors-toggle').disabled=screenMode;$('#persistence-toggle').disabled=screenMode;
  $('#pause-button').textContent=state.streaming?'Pause view':'Resume view';$('#live-dot').classList.toggle('active',connected&&state.streaming&&socketReady);
  $('#stream-status').textContent=!connected?'Waiting for instrument':!state.streaming?'View paused · acquisition unchanged':state.demo?'Demo stream':screenMode?'Instrument screenshots':'Live waveform transfer';
@@ -94,7 +100,7 @@ function updateNotice(){
   else if(state.error)text=state.error;
   else if(!state.streaming)text='View paused · last received data';
   else if(lastBinaryAt&&Date.now()-lastBinaryAt>3000)text='Waiting for a fresh frame · displayed data is stale';
-  else if(state.mode==='waveform'&&plot.frame?.waiting_channels?.length)text=`CH${plot.frame.waiting_channels.join(', CH')}: waiting for an acquisition · check the trigger or select Auto sweep`;
+  else if(state.mode==='waveform'&&plot.frame?.waiting_channels?.length){const waiting=plot.frame.waiting_channels.map(value=>typeof value==='number'?`CH${value}`:value).join(', ');text=`${waiting}: waiting for an acquisition · check the trigger or select Auto sweep`;}
   else if(state.mode==='waveform'&&!Array.from({length:state.channel_count},(_,i)=>state.values[`:CHAN${i+1}:DISP`]).includes('1'))text='All channels are off · enable a channel to display its waveform';
   else if(state.mode==='waveform'&&state.values[':TIM:MODE']!=='MAIN')text='Fast view shows Y–T samples · use Instrument screen for this timebase mode';
  }

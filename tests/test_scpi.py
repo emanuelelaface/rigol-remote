@@ -3,7 +3,7 @@ import json
 import unittest
 from pathlib import Path
 
-from rigol_remote.scpi import Preamble, SCPIConnection, SCPIError, validate_command
+from rigol_remote.scpi import Preamble, SCPIConnection, SCPIError, WaveformNotReady, validate_command
 
 
 class CalibrationTests(unittest.TestCase):
@@ -16,6 +16,11 @@ class CalibrationTests(unittest.TestCase):
         for response in ['1,0,1200,1,1,0,0,1,0,127', '0,0,1200,1,nan,0,0,1,0,127', '0,0,0,1,1,0,0,1,0,127', 'garbage']:
             with self.subTest(response=response), self.assertRaises(SCPIError):
                 Preamble.parse(response)
+
+    def test_zero_point_math_preamble_is_waiting_not_corrupt(self):
+        response = '0,0,0,1,2.000000e-06,-1.200000e-03,0,4.000000e+03,0,127'
+        with self.assertRaises(WaveformNotReady):
+            Preamble.parse(response)
 
     def test_commands_cannot_desynchronize_reply_count(self):
         for command in [':A?;:B?', ':A?;:RUN', ':RUN\n*IDN?', ':CHAN<n>:SCAL 1', ':RUN;STOP', '', 'hello']:

@@ -7,6 +7,7 @@ import csv
 import io
 import json
 import logging
+import re
 import time
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -33,6 +34,7 @@ class Workbench:
         self.error = None
         self.running = True
         self.waiting_channels = []
+        self.acquire_after = 0
 
     def status(self):
         return {'type': 'state', **self.scope.info(), 'mode': self.mode,
@@ -55,6 +57,9 @@ class Workbench:
                 queue.get_nowait()
             queue.put_nowait(data)
 
+    def acquisition_allowed(self):
+        return time.monotonic() >= self.acquire_after
+
     async def acquire(self):
         previous = None
         fps = 0
@@ -64,12 +69,22 @@ class Workbench:
                 previous = None
                 await asyncio.sleep(0.1)
                 continue
+            quiet = self.acquire_after - time.monotonic()
+            if quiet > 0:
+                await asyncio.sleep(min(quiet, 0.1))
+                continue
             try:
                 if self.mode == 'screen':
-                    data = await self.scope.screenshot()
+                    data = await self.scope.screenshot(self.acquisition_allowed)
+                    if data is None:
+                        await asyncio.sleep(0.05)
+                        continue
                     self.frame(data)
                 else:
-                    frame = await self.scope.capture()
+                    frame = await self.scope.capture(self.acquisition_allowed)
+                    if frame is None:
+                        await asyncio.sleep(0.05)
+                        continue
                     self.waiting_channels = frame.get('waiting_channels', [])
                     now = time.perf_counter()
                     if previous is not None:
@@ -84,7 +99,7 @@ class Workbench:
                     await self.scope.transport.close()
                 LOG.warning('Acquisition: %s', exc)
                 await self.broadcast(self.status())
-            interval = 1 / (min(self.target_fps, 3) if self.mode == 'screen' else self.target_fps)
+            interval = 1 / (min(self.target_fps, 1) if self.mode == 'screen' else self.target_fps)
             if self.mode == 'waveform' and self.waiting_channels:
                 interval = max(interval, 1.0)
             # The DS1000Z firmware needs breathing room between transfers. On
@@ -98,7 +113,8 @@ class Workbench:
         index = 0
         while self.running:
             await asyncio.sleep(0.2)
-            if not self.scope.connected or not self.clients or self.error:
+            if (not self.scope.connected or not self.clients or self.error
+                    or time.monotonic() < self.acquire_after):
                 continue
             try:
                 if (self.measurements and time.monotonic() >= next_measurement
@@ -110,7 +126,7 @@ class Workbench:
                         value = None
                     else:
                         async with self.scope.operation_lock:
-                            if not self.scope.connected:
+                            if not self.scope.connected or not self.acquisition_allowed():
                                 continue
                             reply = await self.scope.transport.query(f':MEAS:ITEM? {item},CHAN{channel}')
                             value = numeric(reply)
@@ -167,7 +183,29 @@ async def action(request):
             workbench.streaming = False
             await workbench.scope.disconnect()
         elif name == 'command':
-            result = await workbench.scope.command(data.get('command', ''))
+            command = data.get('command', '')
+            refresh = []
+            key = command.strip().partition(' ')[0].upper() if isinstance(command, str) else ''
+            changed_channel = re.fullmatch(
+                r':CHAN(?:NEL)?(\d+):(?:SCAL(?:E)?|OFFS(?:ET)?|PROB(?:E)?)', key)
+            trigger_source = workbench.scope.state.get(':TRIG:EDGE:SOUR', '')
+            if (workbench.mode == 'waveform'
+                    and workbench.scope.state.get(':TRIG:MODE') == 'EDGE'
+                    and changed_channel
+                    and trigger_source == f'CHAN{changed_channel.group(1)}'):
+                refresh.append(':TRIG:EDGE:LEV')
+            result = await workbench.scope.command(command, refresh)
+            if '?' not in command:
+                # The screenshot service is fragile while the physical display
+                # redraws. Do no background I/O until control changes have been
+                # quiet for a full settling interval.
+                if workbench.mode == 'screen':
+                    delay = 1.5
+                elif key.startswith(':MATH:'):
+                    delay = 0.5
+                else:
+                    delay = 0.1
+                workbench.acquire_after = time.monotonic() + delay
             if isinstance(result, bytes):
                 result = {'binary': base64.b64encode(result).decode(), 'length': len(result)}
         elif name == 'read':
@@ -193,6 +231,9 @@ async def action(request):
                 if item.get('channel') not in range(1, workbench.scope.channel_count + 1) or item.get('item') not in valid_items:
                     raise ValueError('Invalid measurement source or item.')
             workbench.measurements = items
+            selected = {f"{item['channel']}:{item['item']}" for item in items}
+            workbench.measured = {key: value for key, value in workbench.measured.items()
+                                  if key in selected}
         else:
             raise ValueError('Unknown action.')
     except (SCPIError, OSError, asyncio.TimeoutError) as exc:

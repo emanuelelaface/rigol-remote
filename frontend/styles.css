@@ -508,6 +508,52 @@ h1 {
   width:100%;
   height:100%
 }
+.fft-panel {
+  border-top:1px solid var(--line-soft);
+  background:#0a1119
+}
+.fft-panel[hidden] {
+  display:none
+}
+.fft-topline {
+  height:34px;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color:#cbd7e2;
+  background:#101923;
+  border-bottom:1px solid var(--line-soft);
+  font:9px var(--mono);
+  letter-spacing:.35px
+}
+.fft-topline #fft-readout {
+  color:var(--muted);
+  letter-spacing:0
+}
+.math-badge {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  margin-right:7px;
+  border-radius:3px;
+  color:#1a1120;
+  background:#e9a8ff
+}
+.fft-wrap {
+  position:relative;
+  width:100%;
+  height:clamp(190px,25vh,340px);
+  overflow:hidden
+}
+.fft-wrap canvas {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%
+}
 #overlay-canvas {
   touch-action:none
 }
@@ -1316,6 +1362,9 @@ kbd {
   flex:1;
   height:auto
 }
+.scope-card:fullscreen .fft-wrap {
+  height:30vh
+}
 .scope-card:fullscreen .plot-toolbar {
   flex-shrink:0
 }
@@ -1338,6 +1387,9 @@ kbd {
   }
   .plot-wrap {
     height:clamp(370px,46vh,700px)
+  }
+  .fft-wrap {
+    height:clamp(230px,28vh,400px)
   }
   .inspector-heading {
     padding:33px 24px 22px
@@ -1467,6 +1519,9 @@ kbd {
   }
   .plot-wrap {
     height:400px
+  }
+  .fft-wrap {
+    height:260px
   }
   .measurement-grid {
     grid-template-columns:repeat(6,minmax(0,1fr));
@@ -1619,6 +1674,9 @@ kbd {
   }
   .plot-wrap {
     height:300px
+  }
+  .fft-wrap {
+    height:220px
   }
   .channel-chip {
     flex:1;

@@ -31,6 +31,67 @@ class ScopeTests(unittest.IsolatedAsyncioTestCase):
         frame = await self.scope.capture()
         self.assertEqual([c['channel'] for c in frame['channels']], [1])
 
+    async def test_enabled_math_trace_is_transferred_and_packed(self):
+        await self.scope.command(':MATH:SCAL 2')
+        await self.scope.command(':MATH:OFFS -0.75')
+        await self.scope.command(':MATH:DISP 1')
+        frame = await self.scope.capture()
+        self.assertEqual([item['channel'] for item in frame['channels']], [1, 2, 'MATH'])
+        math_trace = frame['channels'][-1]
+        self.assertEqual(math_trace['source'], 'MATH')
+        self.assertEqual(math_trace['operation'], 'ADD')
+        self.assertEqual(math_trace['scale'], 2)
+        self.assertEqual(math_trace['offset'], -0.75)
+        self.assertEqual(len(math_trace['data']), 1200)
+        packet = pack_frame(frame, 10)
+        size = struct.unpack('<I', packet[:4])[0]
+        header = json.loads(packet[4:4+size])
+        self.assertEqual(header['channels'][-1]['channel'], 'MATH')
+        self.assertEqual(header['channels'][-1]['start'], 2400)
+
+    async def test_math_position_changes_metadata_without_cancelling_in_samples(self):
+        await self.scope.command(':STOP')
+        await self.scope.command(':MATH:DISP 1')
+        before = (await self.scope.capture())['channels'][-1]
+        await self.scope.command(':MATH:OFFS -1')
+        after = (await self.scope.capture())['channels'][-1]
+        self.assertEqual(before['data'], after['data'])
+        self.assertEqual(before['offset'], 0)
+        self.assertEqual(after['offset'], -1)
+
+    async def test_fft_trace_carries_its_frequency_axis(self):
+        await self.scope.read_fields([
+            ':MATH:SCAL', ':MATH:OFFS', ':MATH:FFT:UNIT',
+            ':MATH:FFT:HSC', ':MATH:FFT:HCEN'])
+        await self.scope.command(':MATH:OPER FFT')
+        await self.scope.command(':MATH:DISP 1')
+        frame = await self.scope.capture()
+        spectrum = frame['channels'][-1]
+        self.assertEqual(spectrum['operation'], 'FFT')
+        self.assertEqual(spectrum['unit'], 'dB')
+        self.assertEqual(spectrum['frequency_scale'], 1000)
+        self.assertEqual(spectrum['frequency_center'], 5000)
+
+    async def test_zero_point_math_trace_waits_without_data_or_disconnect(self):
+        await self.scope.command(':MATH:DISP 1')
+        query = self.scope.transport.query
+        sent = []
+
+        async def math_not_ready(command, timeout=None):
+            sent.append(command)
+            if (command.endswith(':WAV:PRE?')
+                    and (':WAV:SOUR MATH' in command
+                         or self.scope.transport.state[':WAV:SOUR'] == 'MATH')):
+                return '0,0,0,1,2.000000e-06,-1.200000e-03,0,4.000000e+03,0,127'
+            return await query(command, timeout)
+
+        self.scope.transport.query = math_not_ready
+        frame = await self.scope.capture()
+        self.assertEqual([item['channel'] for item in frame['channels']], [1, 2])
+        self.assertEqual(frame['waiting_channels'], ['MATH'])
+        self.assertTrue(self.scope.connected)
+        self.assertEqual(sent.count(':WAV:DATA?'), 2)
+
     async def test_uncaptured_rigol_record_never_requests_waveform_data(self):
         # Exact reply observed on DS1202Z-E firmware 00.06.03.SP2 in WAIT.
         query = self.scope.transport.query
@@ -54,6 +115,18 @@ class ScopeTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(any('DATA?' in command for command in sent))
         self.scope.transport.query = query
         self.assertEqual(len((await self.scope.capture())['channels']), 2)
+
+    async def test_cancelled_background_capture_does_no_instrument_io(self):
+        query = self.scope.transport.query
+        calls = []
+
+        async def tracked(command, timeout=None):
+            calls.append(command)
+            return await query(command, timeout)
+
+        self.scope.transport.query = tracked
+        self.assertIsNone(await self.scope.capture(lambda: False))
+        self.assertEqual(calls, [])
 
     async def test_malformed_preamble_disconnects_before_data_query(self):
         query = self.scope.transport.query
@@ -97,6 +170,35 @@ class ScopeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(transport.events, [
             'close', 'open', ('query', ':WAV:DATA?', 5), 'close', 'open'])
         self.assertTrue(transport.connected)
+
+    async def test_disposable_binary_socket_does_not_publish_false_disconnect(self):
+        closed = asyncio.Event()
+        release = asyncio.Event()
+
+        class BlockingTransport:
+            connected = True
+
+            async def close(self):
+                self.connected = False
+                closed.set()
+
+            async def open(self):
+                if release.is_set():
+                    self.connected = True
+
+            async def query(self, command, timeout=None):
+                await release.wait()
+                return b'waveform'
+
+        self.scope.demo = False
+        self.scope.transport = BlockingTransport()
+        transfer = asyncio.create_task(self.scope._binary_query(':WAV:DATA?'))
+        await closed.wait()
+        self.assertFalse(self.scope.transport.connected)
+        self.assertTrue(self.scope.connected)
+        release.set()
+        self.assertEqual(await transfer, b'waveform')
+        self.assertTrue(self.scope.connected)
 
     async def test_binary_console_query_replaces_connection(self):
         class FakeTransport:
@@ -198,12 +300,59 @@ class ServerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.status, 404)
 
     async def test_command_roundtrip_and_error(self):
-        response = await self.client.post('/api/action', json={'action':'command','command':':CHAN1:SCAL 2'})
+        self.app[WORKBENCH].mode = 'screen'
+        started = asyncio.get_running_loop().time()
+        response = await self.client.post('/api/action', json={
+            'action': 'command', 'command': ':CHAN1:SCAL 2'})
         self.assertEqual(response.status, 200)
         self.assertEqual((await response.json())['state']['values'][':CHAN1:SCAL'], '2')
+        self.assertGreater(self.app[WORKBENCH].acquire_after - started, 1.4)
         response = await self.client.post('/api/action', json={'action':'command','command':'invalid'})
         self.assertEqual(response.status, 400)
         self.assertIn('error', await response.json())
+
+    async def test_removing_measurements_does_no_instrument_io(self):
+        workbench = self.app[WORKBENCH]
+        workbench.measurements = [{'channel': 1, 'item': 'VMAX'}]
+        workbench.measured = {'1:VMAX': {'value': 1.2, 'timestamp': 1}}
+        query = workbench.scope.transport.query
+        calls = []
+
+        async def tracked(command, timeout=None):
+            calls.append(command)
+            return await query(command, timeout)
+
+        workbench.scope.transport.query = tracked
+        response = await self.client.post('/api/action', json={
+            'action': 'measurements', 'items': []})
+        self.assertEqual(response.status, 200)
+        state = (await response.json())['state']
+        self.assertTrue(state['connected'])
+        self.assertEqual(workbench.measurements, [])
+        self.assertEqual(workbench.measured, {})
+        self.assertEqual(calls, [])
+
+    async def test_channel_scale_refreshes_source_trigger_level_in_waveform_view(self):
+        scope = self.app[WORKBENCH].scope
+        query = scope.transport.query
+        queries = []
+
+        async def changed_level(command, timeout=None):
+            if command == ':TRIG:EDGE:LEV?':
+                queries.append(command)
+                return '7.500000e-01'
+            return await query(command, timeout)
+
+        scope.transport.query = changed_level
+        response = await self.client.post('/api/action', json={
+            'action': 'stream', 'mode': 'waveform', 'enabled': False})
+        self.assertEqual(response.status, 200)
+        response = await self.client.post('/api/action', json={
+            'action': 'command', 'command': ':CHAN1:SCAL 2'})
+        self.assertEqual(response.status, 200)
+        state = (await response.json())['state']
+        self.assertEqual(queries, [':TRIG:EDGE:LEV?'])
+        self.assertEqual(state['values'][':TRIG:EDGE:LEV'], '7.500000e-01')
 
     async def test_rejects_cross_origin_control(self):
         response = await self.client.post('/api/action', json={'action':'disconnect'}, headers={'Origin':'https://unrelated.example'})
@@ -259,7 +408,7 @@ class ServerTests(unittest.IsolatedAsyncioTestCase):
             def info(self):
                 return {'connected': self.connected, 'demo': False, 'values': {}}
 
-            async def capture(self):
+            async def capture(self, allowed=None):
                 self.calls += 1
                 raise SCPIError('bad instrument reply')
 

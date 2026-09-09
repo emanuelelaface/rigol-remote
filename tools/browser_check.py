@@ -34,6 +34,35 @@ async def main(url, executable):
         for panel in ['horizontal','trigger','acquire','math','cursors','display','system','vertical']:
             await page.locator(f'[data-panel="{panel}"]').click()
             await page.wait_for_timeout(400)
+        await page.locator('[data-panel="math"]').click()
+        await page.locator('[data-key=":MATH:DISP"]').select_option('1')
+        await page.wait_for_function("[...document.querySelectorAll('.channel-number')].some(node => node.textContent === 'M')")
+        await page.locator('[data-key=":MATH:OFFS"]').fill('0')
+        await page.locator('[data-key=":MATH:OFFS"]').press('Enter')
+        await page.wait_for_timeout(700)
+        purple_y = """() => {
+          const canvas=document.querySelector('#trace-canvas'),ctx=canvas.getContext('2d');
+          const image=ctx.getImageData(0,0,canvas.width,canvas.height),d=image.data;
+          let total=0,weighted=0;
+          for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++){
+            const i=(y*canvas.width+x)*4,r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];
+            if(r>180&&b>180&&g<210&&a>40){total+=a;weighted+=y*a;}
+          }
+          return total?weighted/total:null;
+        }"""
+        math_y_zero = await page.evaluate(purple_y)
+        await page.locator('[data-key=":MATH:OFFS"]').fill('-1')
+        await page.locator('[data-key=":MATH:OFFS"]').press('Enter')
+        await page.wait_for_timeout(700)
+        math_y_negative = await page.evaluate(purple_y)
+        assert math_y_zero is not None and math_y_negative is not None
+        assert math_y_negative - math_y_zero > 20, (math_y_zero, math_y_negative)
+        await page.locator('[data-key=":MATH:OPER"]').select_option('FFT')
+        await page.wait_for_function("document.querySelector('#fft-panel').hidden === false && document.querySelector('#fft-readout').textContent.includes('Hz')")
+        assert await page.locator('#fft-trace-canvas').evaluate('(node) => node.width > 0 && node.height > 0')
+        await page.wait_for_timeout(500)
+        await page.screenshot(path=str(ROOT/'images/workbench.png'), full_page=True)
+        await page.locator('[data-panel="vertical"]').click()
         await page.locator('[data-key=":CHAN1:COUP"]').select_option('AC')
         await page.wait_for_function("document.querySelector('[data-key=\":CHAN1:COUP\"]').value === 'AC' && !document.querySelector('#run-button').disabled")
         r=await page.request.get(url + '/api/state')
@@ -66,11 +95,15 @@ async def main(url, executable):
         downloaded=await download_info.value
         path=await downloaded.path()
         assert 'time_s,amplitude,unit' in Path(path).read_text()
+        await page.locator('.remove-measurement').click()
+        await page.wait_for_function("document.querySelectorAll('.measurement-item').length === 0")
+        r=await page.request.get(url + '/api/state')
+        assert (await r.json())['connected'], 'Removing a measurement published a false disconnect'
         await page.set_viewport_size({'width':390,'height':844})
         await page.wait_for_timeout(250)
         await page.screenshot(path=str(ROOT/'images/workbench-mobile.png'),full_page=True)
         assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), 'Mobile layout overflows'
-        print(json.dumps({'browser_errors':errors,'desktop_screenshot':'images/workbench.png','mobile_screenshot':'images/workbench-mobile.png','fps':await page.locator('#fps-value').inner_text()},indent=2))
+        print(json.dumps({'browser_errors':errors,'desktop_screenshot':'images/workbench.png','mobile_screenshot':'images/workbench-mobile.png','math_position_shift_px':round(math_y_negative-math_y_zero,1),'fps':await page.locator('#fps-value').inner_text()},indent=2))
         assert not errors, errors
         await browser.close()
 

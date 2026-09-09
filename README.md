@@ -38,8 +38,9 @@ python3 rigol-remote.py --demo
 - Main and delayed timebases, horizontal position, Y–T / X–Y / roll.
 - All 15 trigger types, with common and edge controls in the side panel; type-specific parameters in the command library.
 - Acquisition type, averaging, channel-dependent memory depth, and full acquisition memory download.
-- Instrument math and FFT controls, including sources, operator, window, units, scale, and frequency center.
+- Instrument math and FFT controls, including sources, operator, window, units, scale, and frequency center. Time-domain math follows the instrument's MATH scale and position; FFT uses a separate spectrum plot.
 - Draggable local time cursors with Δt and 1/Δt; separate controls for the instrument's own cursors.
+- Calibrated overlay markers for the edge-trigger voltage and the `t = 0` horizontal position, including off-screen direction indicators.
 - Local trace persistence and grid settings, plus controls for the physical display.
 - Up to 16 configurable instrument measurements. None are enabled automatically; selected measurements refresh slowly to protect the instrument firmware.
 - A library of **368 command families** from the DS1000Z-E programming guide: serial decoding, reference traces, recording/playback, pass/fail, storage, system, and more. Select a query or setting, replace placeholders, and send. Availability and legal parameter ranges depend on model, firmware, options, and current instrument state.
@@ -47,7 +48,7 @@ python3 rigol-remote.py --demo
 
 Common settings have dedicated controls; less common functions use the command library. This is not a claim that every library command has been exercised on physical hardware. Optional MSO digital channels and signal generators do not have dedicated controls in this DS1000Z-E catalog.
 
-Numeric fields accept scientific notation and SI prefixes, for example `500 mV`, `20 us`, `2 ms`, or `1e-3`. Press Enter or leave the field to apply. A changed field is read back once. There is no automatic settings polling; use the refresh button in the control panel when settings are changed on the physical front panel.
+Numeric fields accept scientific notation and SI prefixes, for example `500 mV`, `20 us`, `2 ms`, or `1e-3`. Press Enter or leave the field to apply. The workbench records the value it sends without issuing an immediate readback. There is no automatic settings polling; use the refresh button in the control panel when settings are changed on the physical front panel.
 
 Keyboard shortcuts, when no field or dialog is active:
 
@@ -62,19 +63,19 @@ Keyboard shortcuts, when no field or dialog is active:
 
 ## Refresh and the two display modes
 
-**Waveforms** reads each enabled channel using `:WAVeform:MODE NORMal`, `:WAVeform:FORMat BYTE`, `:WAVeform:PREamble?`, and `:WAVeform:DATA?`. Up to 1,200 samples per channel are sent to the browser as binary WebSocket messages. The browser renders them on a high-DPI canvas. Calibration is read with each trace; no intermediate acquisitions are synthesized.
+**Waveforms** reads each enabled analog channel and the enabled `MATH` trace using `:WAVeform:MODE NORMal`, `:WAVeform:FORMat BYTE`, `:WAVeform:PREamble?`, and `:WAVeform:DATA?`. Up to 1,200 samples per source are sent to the browser as binary WebSocket messages. The browser renders them on high-DPI canvases. BYTE preamble calibration converts samples to values, while the instrument's MATH scale and offset place mathematical traces on their displayed vertical axis. No intermediate acquisitions are synthesized.
 
-The old application requested a whole PNG every 300 ms and opened separate TCP connections for commands. The new application serializes communication, keeps text commands ordered, and uses a disposable connection for every binary response because DS1202Z-E firmware can leave waveform bytes after the declared block. It retains only the latest pending frame for each browser, so slow browsers cannot create an unbounded backlog. The initial target is 10 fps and is adjustable from 5 to 60 fps; the counter reports the **actual rate of received frames**. Start conservatively on real hardware and raise it only after checking stability.
+The old application requested a whole PNG every 300 ms and opened separate TCP connections for commands. The new application serializes communication, suspends background I/O around setting changes, and uses a disposable connection for every binary response because DS1202Z-E firmware can leave waveform bytes after the declared block. It retains only the latest pending frame for each browser, so slow browsers cannot create an unbounded backlog. The initial target is 10 fps and is adjustable from 5 to 60 fps; the counter reports the **actual rate of received frames**. Start conservatively on real hardware and raise it only after checking stability.
 
-**Instrument screen** downloads the original PNG display, including math/FFT traces, decoding, menus, XY/roll/delayed views, hardware cursors, and instrument persistence. This mode targets at most three screenshots per second. It is unavailable in the demo.
+**Instrument screen** downloads the original PNG display, including math/FFT traces, decoding, menus, XY/roll/delayed views, hardware cursors, and instrument persistence. This mode targets at most one screenshot per second and suspends all background I/O for 1.5 seconds after a control change. It is unavailable in the demo.
 
 The instrument's internal waveform capture rate, its LCD refresh, and SCPI transfer rate are different quantities. A 60 fps setting cannot make the instrument deliver 60 acquisitions per second over SCPI. Channels are read sequentially and are not guaranteed to come from the same acquisition; stop the instrument before comparisons requiring a common frozen acquisition. The displayed acquisition latency includes the complete per-channel transfer cycle.
 
-The fast view renders the main analog Y–T samples. Use Instrument screen to inspect results of the instrument's math, decoding, XY, roll, and delayed-timebase functions. Local persistence only accumulates traces actually received by this browser and does not reproduce the instrument's intensity grading.
+The fast view renders analog and time-domain math Y–T samples together. An enabled FFT trace is removed from that plot and rendered in a separate spectrum below it, with the horizontal axis derived from the instrument's FFT frequency scale and center. Use Instrument screen for decoding, XY, roll, delayed-timebase functions, and the exact hardware layout. Local persistence only accumulates traces actually received by this browser and does not reproduce the instrument's intensity grading.
 
 ## Export
 
-- **Camera**: PNG of the displayed waveform view, including local cursors, scale, and retrieval timestamp; in Instrument screen mode it saves the last received screenshot.
+- **Camera**: PNG of the displayed waveform view, including the separate FFT spectrum when active, local cursors, scales, and retrieval timestamp; in Instrument screen mode it saves the last received screenshot.
 - **Export CSV**: last acquired screen samples with calibration applied, channel numbers, times, and instrument/retrieval metadata. Pause the view first to hold the exported screen capture steady. Screen samples are not the full acquisition memory.
 - **Acquire → Download memory ZIP**: stop acquisition, select an enabled channel, and download the full memory in chunks of at most 250,000 BYTE samples. The ZIP contains `channelN.bin` and `metadata.json`. The application does not stop or resume the instrument automatically for this operation.
 - **System → Download instrument PNG**: a fresh physical-screen capture.
@@ -109,7 +110,7 @@ python3 -m playwright install chromium
 python3 tools/browser_check.py
 ```
 
-The screenshots in this README were captured from the demo. The supplied DS1202Z-E running firmware `00.06.03.SP2` was tested directly. A zero-length preamble returned while the trigger was waiting is handled without requesting waveform data. A bounded six-frame test of the disposable binary connections retrieved CH1 and CH2 every time, completed an unchanged CH1 scale write/readback, and received a valid final `*IDN?`. After the first 335 ms frame, the two-channel transfers took 129–137 ms each. This is a bounded protocol check rather than a long-duration stability claim; performance varies with timebase, trigger state and enabled channels. Simulator performance is not a hardware benchmark.
+The screenshots in this README were captured from the demo. The supplied DS1202Z-E running firmware `00.06.03.SP2` was tested directly. A zero-point preamble returned while the trigger is waiting or a new MATH trace is being calculated is handled without requesting waveform data. A bounded six-frame test of the disposable binary connections retrieved CH1 and CH2 every time, completed an unchanged CH1 scale write/readback, and received a valid final `*IDN?`. After the first 335 ms frame, the two-channel transfers took 129–137 ms each. This is a bounded protocol check rather than a long-duration stability claim; performance varies with timebase, trigger state and enabled channels. Simulator performance is not a hardware benchmark.
 
 ## Structure
 

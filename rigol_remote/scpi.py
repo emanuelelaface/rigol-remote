@@ -51,7 +51,10 @@ class Preamble:
                 raise ValueError
             if fields[0] != 0:
                 raise ValueError
-            if fields[2] == 0 and fields[4] == 0 and fields[7] == 0:
+            # The DS1000Z can report zero points while a newly enabled MATH
+            # trace is being calculated, even though X/Y increments are already
+            # populated. This is a valid transient state: DATA? must not follow.
+            if fields[2] == 0:
                 raise WaveformNotReady('Waiting for an acquisition; no waveform data requested.')
             if fields[2] <= 0 or fields[4] <= 0 or fields[7] <= 0:
                 raise ValueError

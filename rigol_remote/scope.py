@@ -12,7 +12,8 @@ from dataclasses import asdict
 from .scpi import Preamble, SCPIConnection, SCPIError, WaveformNotReady, validate_command
 
 CORE = [':TRIG:STAT', ':TRIG:MODE', ':TRIG:SWE', ':TIM:MAIN:SCAL',
-        ':TIM:MAIN:OFFS', ':TIM:MODE', ':ACQ:SRAT', ':ACQ:MDEP', ':ACQ:TYPE']
+        ':TIM:MAIN:OFFS', ':TIM:MODE', ':ACQ:SRAT', ':ACQ:MDEP', ':ACQ:TYPE',
+        ':MATH:DISP', ':MATH:OPER']
 CHANNEL_UNITS = {'VOLT': 'V', 'AMP': 'A', 'WATT': 'W', 'UNKN': ''}
 CHANNEL_FIELDS = ['DISP', 'SCAL', 'OFFS', 'COUP', 'PROB', 'BWL', 'INV', 'VERN', 'UNIT']
 
@@ -40,10 +41,14 @@ class Scope:
         self.wave_configured = False
         self.generation = 0
         self.operation_lock = asyncio.Lock()
+        self.binary_transfer = False
 
     @property
     def connected(self):
-        return self.transport is not None and self.transport.connected
+        # Binary replies use a disposable socket. The session stays logically
+        # connected during that deliberate close/reopen window.
+        return (self.transport is not None
+                and (self.transport.connected or self.binary_transfer))
 
     def info(self):
         return {'connected': self.connected, 'demo': self.demo, 'idn': self.idn,
@@ -77,6 +82,7 @@ class Scope:
             return self.info()
 
     async def _disconnect(self):
+        self.binary_transfer = False
         if self.transport:
             if self.connected and self.saved_wave and self.wave_touched:
                 try:
@@ -109,9 +115,22 @@ class Scope:
         if self.state.get(':TRIG:MODE') == 'EDGE':
             for key in ['SOUR', 'SLOP', 'LEV']:
                 self.state[f':TRIG:EDGE:{key}'] = await self.transport.query(f':TRIG:EDGE:{key}?')
+        if self.state.get(':MATH:DISP') in ('1', 'ON'):
+            for key in ['SCAL', 'OFFS']:
+                self.state[f':MATH:{key}'] = await self.transport.query(f':MATH:{key}?')
+            if self.state[':MATH:OPER'] == 'FFT':
+                for key in ['UNIT', 'HSC', 'HCEN']:
+                    self.state[f':MATH:FFT:{key}'] = await self.transport.query(
+                        f':MATH:FFT:{key}?')
 
-    async def command(self, command):
+    async def command(self, command, refresh_fields=()):
         command = validate_command(command)
+        if not isinstance(refresh_fields, (list, tuple)) or len(refresh_fields) > 3:
+            raise ValueError('Refresh at most three settings after a command.')
+        for field in refresh_fields:
+            if (not isinstance(field, str) or '?' in field or ';' in field
+                    or not field.startswith((':', '*'))):
+                raise ValueError('Expected a SCPI setting name to refresh.')
         async with self.operation_lock:
             if not self.connected:
                 raise SCPIError('Connect an oscilloscope first.')
@@ -145,6 +164,15 @@ class Scope:
                 # Give the front-panel operation time to settle before the next
                 # explicitly requested read or waveform frame.
                 await asyncio.sleep(0.15)
+                if refresh_fields:
+                    await asyncio.sleep(0.1)
+                    for field in refresh_fields:
+                        value = await self.transport.query(field + '?')
+                        if not isinstance(value, str):
+                            await self.transport.close()
+                            raise SCPIError(
+                                f'Unexpected binary reply to {field}? Connection closed.')
+                        self.state[field] = value
             return result
 
     async def read_fields(self, fields):
@@ -176,34 +204,42 @@ class Scope:
             return await self.transport.query(command, timeout=timeout)
 
         transport = self.transport
-        await transport.close()
+        self.binary_transfer = True
         try:
+            await transport.close()
             await transport.open()
             result = await transport.query(command, timeout=timeout)
+            await transport.close()  # Discard any undocumented trailing bytes.
+            await transport.open()   # Clean text-command connection for later use.
+            return result
         except BaseException:
             # Do not reconnect or retry after a failed binary transfer.
             await transport.close()
             raise
+        finally:
+            self.binary_transfer = False
 
-        await transport.close()  # Discard any undocumented trailing bytes.
-        await transport.open()   # Clean text-command connection for later use.
-        return result
-
-    async def capture(self):
+    async def capture(self, allowed=None):
         channels = []
         waiting_channels = []
         start = time.perf_counter()
         async with self.operation_lock:
+            if allowed is not None and not allowed():
+                return None
             if not self.connected:
                 raise SCPIError('Connect an oscilloscope first.')
             enabled = [ch for ch in range(1, self.channel_count + 1)
                        if self.state.get(f':CHAN{ch}:DISP') in ('1', 'ON')]
+            sources = [(ch, f'CHAN{ch}') for ch in enabled]
+            if self.state.get(':MATH:DISP') in ('1', 'ON'):
+                sources.append(('MATH', 'MATH'))
             trigger_status = self.state.get(':TRIG:STAT')
             if trigger_status == 'WAIT':
                 trigger_status = await self.transport.query(':TRIG:STAT?')
                 self.state[':TRIG:STAT'] = trigger_status
             if trigger_status == 'WAIT':
-                return {'channels': [], 'waiting_channels': enabled,
+                return {'channels': [],
+                        'waiting_channels': [channel for channel, _ in sources],
                         'timestamp': time.time(),
                         'acquisition_ms': (time.perf_counter() - start) * 1000,
                         'generation': self.generation,
@@ -214,14 +250,14 @@ class Scope:
                 await asyncio.sleep(0.05)
                 self.wave_configured = True
                 self.wave_touched = True
-            for ch in enabled:
+            for channel, source in sources:
                 # Read calibration with each trace, including changes made on the
                 # physical front panel. No interpolation or invented acquisitions.
-                pre = await self.transport.query(f':WAV:SOUR CHAN{ch};:WAV:PRE?')
+                pre = await self.transport.query(f':WAV:SOUR {source};:WAV:PRE?')
                 try:
                     p = Preamble.parse(pre)
                 except WaveformNotReady:
-                    waiting_channels.append(ch)
+                    waiting_channels.append(channel)
                     continue
                 except SCPIError:
                     # Never leave polling active after a malformed response.
@@ -232,10 +268,35 @@ class Scope:
                 if not isinstance(data, bytes) or not 1 <= len(data) <= 1200:
                     await self.transport.close()
                     raise SCPIError('Expected 1–1200 BYTE screen samples.')
-                channels.append({'channel': ch, 'preamble': asdict(p), 'data': data,
-                                 'scale': p.y_increment * 25,
-                                 'offset': p.y_origin * p.y_increment,
-                                 'unit': CHANNEL_UNITS.get(self.state.get(f':CHAN{ch}:UNIT'), 'V')})
+                is_math = channel == 'MATH'
+                math_operation = self.state.get(':MATH:OPER') if is_math else None
+                math_unit = ('dB' if math_operation == 'FFT'
+                             and self.state.get(':MATH:FFT:UNIT') == 'DB' else 'V')
+                # MATH preambles are useful for converting BYTE samples back to
+                # values, but some firmware revisions do not keep their Y origin
+                # aligned with the position shown on the display. Use the MATH
+                # display controls for placement, falling back to the preamble
+                # only when those settings have not been read yet.
+                display_scale = (numeric(self.state.get(':MATH:SCAL'))
+                                 if is_math else None)
+                display_offset = (numeric(self.state.get(':MATH:OFFS'))
+                                  if is_math else None)
+                channels.append({'channel': channel, 'source': source,
+                                 'operation': math_operation,
+                                 'preamble': asdict(p), 'data': data,
+                                 'scale': (display_scale if display_scale
+                                           and display_scale > 0 else p.y_increment * 25),
+                                 'offset': (display_offset if display_offset is not None
+                                            else p.y_origin * p.y_increment),
+                                 'frequency_scale': (numeric(self.state.get(':MATH:FFT:HSC'))
+                                                     if is_math and math_operation == 'FFT'
+                                                     else None),
+                                 'frequency_center': (numeric(self.state.get(':MATH:FFT:HCEN'))
+                                                      if is_math and math_operation == 'FFT'
+                                                      else None),
+                                 'unit': (math_unit if is_math else
+                                          CHANNEL_UNITS.get(
+                                              self.state.get(f':CHAN{channel}:UNIT'), 'V'))})
             frame = {'channels': channels, 'timestamp': time.time(),
                      'waiting_channels': waiting_channels,
                      'acquisition_ms': (time.perf_counter() - start) * 1000,
@@ -245,8 +306,10 @@ class Scope:
             self.last_frame = frame
             return frame
 
-    async def screenshot(self):
+    async def screenshot(self, allowed=None):
         async with self.operation_lock:
+            if allowed is not None and not allowed():
+                return None
             if self.demo:
                 raise SCPIError('The demo has no physical screen. Export the waveform as PNG instead.')
             if not self.connected:
@@ -370,24 +433,47 @@ class DemoConnection:
             elif key in (':CLE', ':CLEAR', ':MEAS:STAT:RES'):
                 pass
             elif key == ':WAV:PRE':
-                ch = int(self.state[':WAV:SOUR'][-1])
-                scale = float(self.state[f':CHAN{ch}:SCAL'])
-                offset = float(self.state[f':CHAN{ch}:OFFS'])
+                source = self.state[':WAV:SOUR']
+                if source == 'MATH':
+                    scale = float(self.state[':MATH:SCAL'])
+                    offset = float(self.state[':MATH:OFFS'])
+                else:
+                    ch = int(source[-1])
+                    scale = float(self.state[f':CHAN{ch}:SCAL'])
+                    offset = float(self.state[f':CHAN{ch}:OFFS'])
                 dt = float(self.state[':TIM:MAIN:SCAL']) / 100
                 origin = -600*dt + float(self.state[':TIM:MAIN:OFFS'])
                 result = f'0,0,1200,1,{dt},{origin},0,{scale/25},{offset/(scale/25)},127'
             elif key == ':WAV:DATA':
-                ch = int(self.state[':WAV:SOUR'][-1])
+                source = self.state[':WAV:SOUR']
                 p = Preamble.parse(await self.query(':WAV:PRE?'))
                 if self.state[':TRIG:STAT'] != 'STOP':
                     self.phase += 0.005
-                def sample(i):
+                def analog(ch, i):
                     angle = 2 * math.pi * 1000 * p.time(i)
-                    volts = (1.25*math.sin(angle) if ch == 1 else 0.8*math.sin(angle + 0.75))
+                    volts = (1.25*math.sin(angle) if ch == 1 else
+                             0.8*math.sin(angle + 0.75))
                     volts += 0.018*math.sin(i*1.7+self.phase)
-                    if self.state[f':CHAN{ch}:INV'] == '1':
-                        volts = -volts
-                    return max(0, min(255, round(volts/p.y_increment + p.y_origin + p.y_reference)))
+                    return -volts if self.state[f':CHAN{ch}:INV'] == '1' else volts
+                def sample(i):
+                    if source == 'MATH':
+                        a, b = analog(1, i), analog(2, i)
+                        operation = self.state[':MATH:OPER']
+                        volts = {'ADD': a+b, 'SUBT': a-b, 'MULT': a*b,
+                                 'DIV': a/b if abs(b) > .08 else 0,
+                                 'ABS': abs(a), 'SQRT': math.sqrt(abs(a))}.get(
+                                     operation, a+b)
+                        if operation == 'FFT':
+                            volts = 1.1 + .45*math.sin(i*.035) + .2*math.sin(i*.11)
+                        if self.state[':MATH:INV'] == '1':
+                            volts = -volts
+                    else:
+                        volts = analog(int(source[-1]), i)
+                    # DS1000Z-E MATH screen bytes stay anchored around YREF;
+                    # MATH:OFFS is applied by the display separately. Keep the
+                    # demo faithful so visual tests catch offset cancellation.
+                    origin = 0 if source == 'MATH' else p.y_origin
+                    return max(0, min(255, round(volts/p.y_increment + origin + p.y_reference)))
                 result = bytes(sample(i) for i in range(1200))
             elif key == ':MEAS:ITEM':
                 item = value.split(',')[0].upper()

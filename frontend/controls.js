@@ -1,5 +1,7 @@
 export const COLORS = ['#ebd66c', '#6ad6e9', '#b798f7', '#f09b85'];
+export const MATH_COLOR = '#e9a8ff';
 export const channelUnit = (state,ch) => ({VOLT:'V',AMP:'A',WATT:'W',UNKN:''}[state.values?.[`:CHAN${ch}:UNIT`]] ?? 'V');
+export const mathUnit = state => state.values?.[':MATH:OPER']==='FFT'&&state.values?.[':MATH:FFT:UNIT']==='DB'?'dB':'V';
 export const TITLES = {vertical:'Vertical channels',horizontal:'Horizontal timebase',trigger:'Trigger',acquire:'Acquisition',math:'Math & FFT',cursors:'Cursor measurements',display:'Display preferences',system:'System & tools'};
 export const MEASUREMENTS = {
  FREQ:['Frequency','Hz'], PER:['Period','s'], VPP:['Peak to peak','V'], VRMS:['RMS','V'], VMAX:['Maximum','V'], VMIN:['Minimum','V'],
@@ -128,7 +130,7 @@ export function buildPanel(name, state, hooks) {
   const download=E('button','button full-width','Download memory ZIP');download.dataset.connected='';download.onclick=()=>hooks.attempt(()=>hooks.download(`/api/memory.zip?channel=${choice.value}`,'rigol-memory.zip',download));p.append(download);
   link('Waveform recording & playback',':FUNCtion:WREC');link('Pass / fail testing',':MASK');
  } else if(name==='math') {
-  note('These controls operate the instrument’s math engine. Select Instrument screen to see its math or FFT trace.');
+  note('Time-domain math follows the instrument scale and position. FFT appears in a separate frequency plot below the waveforms.');
   let p=section('Math operation');select(p,'Math trace',':MATH:DISP',BOOL);
   select(p,'Operator',':MATH:OPER',options(['ADD','A + B'],['SUBT','A − B'],['MULT','A × B'],['DIV','A ÷ B'],['FFT','FFT'],['AND','A AND B'],['OR','A OR B'],['XOR','A XOR B'],['NOT','NOT A'],['INTG','Integral'],['DIFF','Derivative'],['SQRT','Square root'],['LOG','Log₁₀'],['LN','Natural logarithm'],['EXP','Exponential'],['ABS','Absolute'],['FILT','Filter']));
   select(p,'Source A',':MATH:SOUR1',CH(count));select(p,'Source B',':MATH:SOUR2',CH(count));number(p,'Vertical scale',':MATH:SCAL');number(p,'Position',':MATH:OFFS');
