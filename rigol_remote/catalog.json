@@ -1,0 +1,3738 @@
+[
+  {
+    "name": ":AUToscale",
+    "group": "AUToscale",
+    "forms": [
+      ":AUToscale"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CLEar",
+    "group": "CLEar",
+    "forms": [
+      ":CLEar"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":RUN",
+    "group": "RUN",
+    "forms": [
+      ":RUN",
+      ":STOP"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":SINGle",
+    "group": "SINGle",
+    "forms": [
+      ":SINGle"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TFORce",
+    "group": "TFORce",
+    "forms": [
+      ":TFORce"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":ACQuire:AVERages",
+    "group": "ACQuire",
+    "forms": [
+      ":ACQuire:AVERages <count>",
+      ":ACQuire:AVERages?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":ACQuire:MDEPth",
+    "group": "ACQuire",
+    "forms": [
+      ":ACQuire:MDEPth <mdep>",
+      ":ACQuire:MDEPth?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":ACQuire:TYPE",
+    "group": "ACQuire",
+    "forms": [
+      ":ACQuire:TYPE <type>",
+      ":ACQuire:TYPE?"
+    ],
+    "choices": [
+      "NORMal|AVERages|PEAK|HRESolution"
+    ]
+  },
+  {
+    "name": ":ACQuire:SRATe",
+    "group": "ACQuire",
+    "forms": [
+      ":ACQuire:SRATe?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CALibrate:QUIT",
+    "group": "CALibrate",
+    "forms": [
+      ":CALibrate:QUIT"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CALibrate:STARt",
+    "group": "CALibrate",
+    "forms": [
+      ":CALibrate:STARt"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CHANnel<n>:BWLimit",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:BWLimit <type>",
+      ":CHANnel<n>:BWLimit?"
+    ],
+    "choices": [
+      "1|2",
+      "20M|OFF"
+    ]
+  },
+  {
+    "name": ":CHANnel<n>:COUPling",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:COUPling <coupling>",
+      ":CHANnel<n>:COUPling?"
+    ],
+    "choices": [
+      "1|2",
+      "AC|DC|GND"
+    ]
+  },
+  {
+    "name": ":CHANnel<n>:DISPlay",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:DISPlay <bool>",
+      ":CHANnel<n>:DISPlay?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":CHANnel<n>:INVert",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:INVert <bool>",
+      ":CHANnel<n>:INVert?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":CHANnel<n>:OFFSet",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:OFFSet <offset>",
+      ":CHANnel<n>:OFFSet?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":CHANnel<n>:RANGe",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:RANGe <range>",
+      ":CHANnel<n>:RANGe?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":CHANnel<n>:TCAL",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:TCAL <val>",
+      ":CHANnel<n>:TCAL?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":CHANnel<n>:SCALe",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:SCALe <scale>",
+      ":CHANnel<n>:SCALe?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":CHANnel<n>:PROBe",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:PROBe <atten>",
+      ":CHANnel<n>:PROBe?"
+    ],
+    "choices": [
+      "1|2",
+      "0.01|0.02|0.05|0.1|0.2|0.5|1|2|5|10|20|50| 100|200|500|1000"
+    ]
+  },
+  {
+    "name": ":CHANnel<n>:UNITs",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:UNITs <units>",
+      ":CHANnel<n>:UNITs?"
+    ],
+    "choices": [
+      "1|2",
+      "VOLTage|WATT|AMPere|UNKNown"
+    ]
+  },
+  {
+    "name": ":CHANnel<n>:VERNier",
+    "group": "CHANnel",
+    "forms": [
+      ":CHANnel<n>:VERNier <bool>",
+      ":CHANnel<n>:VERNier?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":CURSor:MODE",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MODE <mode>",
+      ":CURSor:MODE?"
+    ],
+    "choices": [
+      "OFF|MANual|TRACk|AUTO|XY"
+    ]
+  },
+  {
+    "name": ":CURSor:MANual:TYPE",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:TYPE <type>",
+      ":CURSor:MANual:TYPE?"
+    ],
+    "choices": [
+      "X|Y"
+    ]
+  },
+  {
+    "name": ":CURSor:MANual:SOURce",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:SOURce <source>",
+      ":CURSor:MANual:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2|MATH"
+    ]
+  },
+  {
+    "name": ":CURSor:MANual:TUNit",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:TUNit <unit>",
+      ":CURSor:MANual:TUNit?"
+    ],
+    "choices": [
+      "S|HZ|DEGRee|PERCent"
+    ]
+  },
+  {
+    "name": ":CURSor:MANual:VUNit",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:VUNit <unit>",
+      ":CURSor:MANual:VUNit?"
+    ],
+    "choices": [
+      "PERCent|SOURce"
+    ]
+  },
+  {
+    "name": ":CURSor:MANual:AX",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:AX <x>",
+      ":CURSor:MANual:AX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:MANual:BX",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:BX <x>",
+      ":CURSor:MANual:BX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:MANual:AY",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:AY <y>",
+      ":CURSor:MANual:AY?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:MANual:BY",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:BY <y>",
+      ":CURSor:MANual:BY?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:MANual:AXValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:AXValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:MANual:AYValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:AYValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:MANual:BXValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:BXValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:MANual:BYValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:BYValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:MANual:XDELta",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:XDELta?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:MANual:IXDELta",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:IXDELta?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:MANual:YDELta",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:MANual:YDELta?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:SOURce1",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:SOURce1 <source>",
+      ":CURSor:TRACk:SOURce1?"
+    ],
+    "choices": [
+      "OFF|CHANnel1|CHANnel2|MATH"
+    ]
+  },
+  {
+    "name": ":CURSor:TRACk:SOURce2",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:SOURce2 <source>",
+      ":CURSor:TRACk:SOURce2?"
+    ],
+    "choices": [
+      "OFF|CHANnel1|CHANnel2|MATH"
+    ]
+  },
+  {
+    "name": ":CURSor:TRACk:AX",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:AX <x>",
+      ":CURSor:TRACk:AX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:BX",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:BX <x>",
+      ":CURSor:TRACk:BX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:AY",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:AY?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:BY",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:BY?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:AXValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:AXValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:AYValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:AYValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:BXValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:BXValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:BYValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:BYValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:XDELta",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:XDELta?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:YDELta",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:YDELta?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:TRACk:IXDELTA",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:TRACk:IXDELTA?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:AUTO:ITEM",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:AUTO:ITEM <item>",
+      ":CURSor:AUTO:ITEM?"
+    ],
+    "choices": [
+      "OFF|ITEM1|ITEM2|ITEM3|ITEM4|ITEM5"
+    ]
+  },
+  {
+    "name": ":CURSor:AUTO:AX",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:AUTO:AX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:AUTO:BX",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:AUTO:BX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:AUTO:AY",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:AUTO:AY?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:AUTO:BY",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:AUTO:BY?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:AUTO:AXValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:AUTO:AXValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:AUTO:AYValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:AUTO:AYValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:AUTO:BXValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:AUTO:BXValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:AUTO:BYValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:AUTO:BYValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:XY:AX",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:XY:AX <x>",
+      ":CURSor:XY:AX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:XY:BX",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:XY:BX <x>",
+      ":CURSor:XY:BX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:XY:AY",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:XY:AY <y>",
+      ":CURSor:XY:AY?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:XY:BY",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:XY:BY <y>",
+      ":CURSor:XY:BY?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:XY:AXValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:XY:AXValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:XY:AYValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:XY:AYValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:XY:BXValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:XY:BXValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":CURSor:XY:BYValue",
+    "group": "CURSor",
+    "forms": [
+      ":CURSor:XY:BYValue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":DECoder<n>:MODE",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:MODE <mode>",
+      ":DECoder<n>:MODE?"
+    ],
+    "choices": [
+      "1|2",
+      "PARallel|UART|SPI|IIC"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:DISPlay",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:DISPlay <bool>",
+      ":DECoder<n>:DISPlay?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:FORMat",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:FORMat <fmt>",
+      ":DECoder<n>:FORMat?"
+    ],
+    "choices": [
+      "1|2",
+      "HEX|ASCii|DEC|BIN|LINE"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:POSition",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:POSition <pos>",
+      ":DECoder<n>:POSition?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:THREshold:CHANnel1",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:THREshold:CHANnel1 <thre>",
+      ":DECoder<n>:THREshold:CHANnel1?",
+      ":DECoder<n>:THREshold:CHANnel2 <thre>",
+      ":DECoder<n>:THREshold:CHANnel2?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:THREshold:AUTO",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:THREshold:AUTO <bool>",
+      ":DECoder<n>:THREshold:AUTO?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:CONFig:LABel",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:CONFig:LABel <bool>",
+      ":DECoder<n>:CONFig:LABel?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:CONFig:LINE",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:CONFig:LINE <bool>",
+      ":DECoder<n>:CONFig:LINE?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:CONFig:FORMat",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:CONFig:FORMat <bool>",
+      ":DECoder<n>:CONFig:FORMat?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:CONFig:ENDian",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:CONFig:ENDian <bool>",
+      ":DECoder<n>:CONFig:ENDian?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:CONFig:WIDth",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:CONFig:WIDth <bool>",
+      ":DECoder<n>:CONFig:WIDth?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:UART:TX",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:UART:TX <tx>",
+      ":DECoder<n>:UART:TX?"
+    ],
+    "choices": [
+      "1|2",
+      "CHANnel1|CHANnel2|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:UART:RX",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:UART:RX <rx>",
+      ":DECoder<n>:UART:RX?"
+    ],
+    "choices": [
+      "1|2",
+      "CHANnel1|CHANnel2|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:UART:POLarity",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:UART:POLarity <pol>",
+      ":DECoder<n>:UART:POLarity?"
+    ],
+    "choices": [
+      "1|2",
+      "NEGative|POSitive"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:UART:ENDian",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:UART:ENDian <endian>",
+      ":DECoder<n>:UART:ENDian?"
+    ],
+    "choices": [
+      "1|2",
+      "LSB|MSB"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:UART:BAUD",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:UART:BAUD <baud>",
+      ":DECoder<n>:UART:BAUD?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:UART:WIDTh",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:UART:WIDTh <wid>",
+      ":DECoder<n>:UART:WIDTh?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:UART:STOP",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:UART:STOP <stop>",
+      ":DECoder<n>:UART:STOP?"
+    ],
+    "choices": [
+      "1|2",
+      "1|1.5|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:UART:PARity",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:UART:PARity <parity>",
+      ":DECoder<n>:UART:PARity?"
+    ],
+    "choices": [
+      "1|2",
+      "NONE|EVEN|ODD"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:IIC:CLK",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:IIC:CLK <clk>",
+      ":DECoder<n>:IIC:CLK?"
+    ],
+    "choices": [
+      "1|2",
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:IIC:DATA",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:IIC:DATA <dat>",
+      ":DECoder<n>:IIC:DATA?"
+    ],
+    "choices": [
+      "1|2",
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:IIC:ADDRess",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:IIC:ADDRess <addr>",
+      ":DECoder<n>:IIC:ADDRess?"
+    ],
+    "choices": [
+      "1|2",
+      "NORMal|RW"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:CLK",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:CLK <clk>",
+      ":DECoder<n>:SPI:CLK?"
+    ],
+    "choices": [
+      "1|2",
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:MISO",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:MISO <miso>",
+      ":DECoder<n>:SPI:MISO?"
+    ],
+    "choices": [
+      "1|2",
+      "CHANnel1|CHANnel2|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:MOSI",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:MOSI <mosi>",
+      ":DECoder<n>:SPI:MOSI?"
+    ],
+    "choices": [
+      "1|2",
+      "CHANnel1|CHANnel2|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:CS",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:CS <cs>",
+      ":DECoder<n>:SPI:CS?"
+    ],
+    "choices": [
+      "1|2",
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:SELect",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:SELect <CsNcs>",
+      ":DECoder<n>:SPI:SELect?"
+    ],
+    "choices": [
+      "1|2",
+      "NCS|CS"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:MODE",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:MODE <CsTmo>",
+      ":DECoder<n>:SPI:MODE?"
+    ],
+    "choices": [
+      "1|2",
+      "CS|TIMeout"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:TIMeout",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:TIMeout <tmo>",
+      ":DECoder<n>:SPI:TIMeout?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:POLarity",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:POLarity <pol>",
+      ":DECoder<n>:SPI:POLarity?"
+    ],
+    "choices": [
+      "1|2",
+      "NEGative|POSitive"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:EDGE",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:EDGE <edge>",
+      ":DECoder<n>:SPI:EDGE?"
+    ],
+    "choices": [
+      "1|2",
+      "RISE|FALL"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:ENDian",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:ENDian <endian>",
+      ":DECoder<n>:SPI:ENDian?"
+    ],
+    "choices": [
+      "1|2",
+      "LSB|MSB"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:SPI:WIDTh",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:SPI:WIDTh <wid>",
+      ":DECoder<n>:SPI:WIDTh?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:PARallel:CLK",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:PARallel:CLK <clk>",
+      ":DECoder<n>:PARallel:CLK?"
+    ],
+    "choices": [
+      "1|2",
+      "CHANnel1|CHANnel2|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:PARallel:EDGE",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:PARallel:EDGE <edge>",
+      ":DECoder<n>:PARallel:EDGE?"
+    ],
+    "choices": [
+      "1|2",
+      "RISE|FALL|BOTH"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:PARallel:WIDTh",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:PARallel:WIDTh <wid>",
+      ":DECoder<n>:PARallel:WIDTh?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:PARallel:BITX",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:PARallel:BITX <bit>",
+      ":DECoder<n>:PARallel:BITX?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:PARallel:SOURce",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:PARallel:SOURce <src>",
+      ":DECoder<n>:PARallel:SOURce?"
+    ],
+    "choices": [
+      "1|2",
+      "CHANnel1|CHANnel2|"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:PARallel:POLarity",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:PARallel:POLarity <pol>",
+      ":DECoder<n>:PARallel:POLarity?"
+    ],
+    "choices": [
+      "1|2",
+      "NEGative|POSitive"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:PARallel:NREJect",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:PARallel:NREJect <bool>",
+      ":DECoder<n>:PARallel:NREJect?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:PARallel:NRTime",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:PARallel:NRTime <time>",
+      ":DECoder<n>:PARallel:NRTime?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:PARallel:CCOMpensation",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:PARallel:CCOMpensation <comp>",
+      ":DECoder<n>:PARallel:CCOMpensation?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":DECoder<n>:PARallel:PLOT",
+    "group": "DECoder",
+    "forms": [
+      ":DECoder<n>:PARallel:PLOT <bool>",
+      ":DECoder<n>:PARallel:PLOT?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":DISPlay:CLEar",
+    "group": "DISPlay",
+    "forms": [
+      ":DISPlay:CLEar"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":DISPlay:DATA",
+    "group": "DISPlay",
+    "forms": [
+      ":DISPlay:DATA? [<color>,<invert>,<format>]"
+    ],
+    "choices": [
+      "ON|OFF",
+      "1|ON",
+      "0|OFF",
+      "BMP24|BMP8|PNG|JPEG|TIFF"
+    ]
+  },
+  {
+    "name": ":DISPlay:TYPE",
+    "group": "DISPlay",
+    "forms": [
+      ":DISPlay:TYPE <type>",
+      ":DISPlay:TYPE?"
+    ],
+    "choices": [
+      "VECTors|DOTS"
+    ]
+  },
+  {
+    "name": ":DISPlay:GRADing:TIME",
+    "group": "DISPlay",
+    "forms": [
+      ":DISPlay:GRADing:TIME <time>",
+      ":DISPlay:GRADing:TIME?"
+    ],
+    "choices": [
+      "MIN|0.1|0.2|0.5|1|5|10|INFinite"
+    ]
+  },
+  {
+    "name": ":DISPlay:WBRightness",
+    "group": "DISPlay",
+    "forms": [
+      ":DISPlay:WBRightness <time>",
+      ":DISPlay:WBRightness?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":DISPlay:GRID",
+    "group": "DISPlay",
+    "forms": [
+      ":DISPlay:GRID <grid>",
+      ":DISPlay:GRID?"
+    ],
+    "choices": [
+      "FULL|HALF|NONE"
+    ]
+  },
+  {
+    "name": ":DISPlay:GBRightness",
+    "group": "DISPlay",
+    "forms": [
+      ":DISPlay:GBRightness <brightness>",
+      ":DISPlay:GBRightness?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":ETABle<n>:DISP",
+    "group": "ETABle",
+    "forms": [
+      ":ETABle<n>:DISP <bool>",
+      ":ETABle<n>:DISP?"
+    ],
+    "choices": [
+      "1|2",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":ETABle<n>:FORMat",
+    "group": "ETABle",
+    "forms": [
+      ":ETABle<n>:FORMat <fmt>",
+      ":ETABle<n>:FORMat?"
+    ],
+    "choices": [
+      "1|2",
+      "HEX|ASCii|DEC"
+    ]
+  },
+  {
+    "name": ":ETABle<n>:VIEW",
+    "group": "ETABle",
+    "forms": [
+      ":ETABle<n>:VIEW <view>",
+      ":ETABle<n>:VIEW?"
+    ],
+    "choices": [
+      "1|2",
+      "PACKage|DETail|PAYLoad"
+    ]
+  },
+  {
+    "name": ":ETABle<n>:COLumn",
+    "group": "ETABle",
+    "forms": [
+      ":ETABle<n>:COLumn <col>",
+      ":ETABle<n>:COLumn?"
+    ],
+    "choices": [
+      "1|2",
+      "DATA|TX|RX|MISO|MOSI"
+    ]
+  },
+  {
+    "name": ":ETABle<n>:ROW",
+    "group": "ETABle",
+    "forms": [
+      ":ETABle<n>:ROW <row>",
+      ":ETABle<n>:ROW?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":ETABle<n>:SORT",
+    "group": "ETABle",
+    "forms": [
+      ":ETABle<n>:SORT <sort>",
+      ":ETABle<n>:SORT?"
+    ],
+    "choices": [
+      "1|2",
+      "ASCend|DESCend"
+    ]
+  },
+  {
+    "name": ":ETABle<n>:DATA",
+    "group": "ETABle",
+    "forms": [
+      ":ETABle<n>:DATA?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":FUNCtion:WRECord:FEND",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WRECord:FEND <frame>",
+      ":FUNCtion:WRECord:FEND?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":FUNCtion:WRECord:FMAX",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WRECord:FMAX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":FUNCtion:WRECord:FINTerval",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WRECord:FINTerval <interval>",
+      ":FUNCtion:WRECord:FINTerval?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":FUNCtion:WRECord:PROMpt",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WRECord:PROMpt <bool>",
+      ":FUNCtion:WRECord:PROMpt?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":FUNCtion:WRECord:OPERate",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WRECord:OPERate <opt>",
+      ":FUNCtion:WRECord:OPERate?"
+    ],
+    "choices": [
+      "RUN|STOP"
+    ]
+  },
+  {
+    "name": ":FUNCtion:WRECord:ENABle",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WRECord:ENABle <bool>",
+      ":FUNCtion:WRECord:ENABle?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":FUNCtion:WREPlay:FSTart",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WREPlay:FSTart <sta>",
+      ":FUNCtion:WREPlay:FSTart?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":FUNCtion:WREPlay:FEND",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WREPlay:FEND <end>",
+      ":FUNCtion:WREPlay:FEND?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":FUNCtion:WREPlay:FMAX",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WREPlay:FMAX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":FUNCtion:WREPlay:FINTerval",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WREPlay:FINTerval <interval>",
+      ":FUNCtion:WREPlay:FINTerval?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":FUNCtion:WREPlay:MODE",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WREPlay:MODE <mode>",
+      ":FUNCtion:WREPlay:MODE?"
+    ],
+    "choices": [
+      "REPeat|SINGle"
+    ]
+  },
+  {
+    "name": ":FUNCtion:WREPlay:DIRection",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WREPlay:DIRection <dir>",
+      ":FUNCtion:WREPlay:DIRection?"
+    ],
+    "choices": [
+      "FORWard|BACKward"
+    ]
+  },
+  {
+    "name": ":FUNCtion:WREPlay:OPERate",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WREPlay:OPERate <opt>",
+      ":FUNCtion:WREPlay:OPERate?"
+    ],
+    "choices": [
+      "PLAY|PAUSe|STOP"
+    ]
+  },
+  {
+    "name": ":FUNCtion:WREPlay:FCURrent",
+    "group": "FUNCtion",
+    "forms": [
+      ":FUNCtion:WREPlay:FCURrent <cur>",
+      ":FUNCtion:WREPlay:FCURrent?"
+    ],
+    "choices": []
+  },
+  {
+    "name": "*CLS",
+    "group": "*CLS",
+    "forms": [
+      "*CLS"
+    ],
+    "choices": []
+  },
+  {
+    "name": "*ESE",
+    "group": "*ESE",
+    "forms": [
+      "*ESE <value>",
+      "*ESE?"
+    ],
+    "choices": []
+  },
+  {
+    "name": "*ESR",
+    "group": "*ESR",
+    "forms": [
+      "*ESR?"
+    ],
+    "choices": []
+  },
+  {
+    "name": "*IDN",
+    "group": "*IDN",
+    "forms": [
+      "*IDN?"
+    ],
+    "choices": []
+  },
+  {
+    "name": "*OPC",
+    "group": "*OPC",
+    "forms": [
+      "*OPC",
+      "*OPC?"
+    ],
+    "choices": []
+  },
+  {
+    "name": "*RST",
+    "group": "*RST",
+    "forms": [
+      "*RST"
+    ],
+    "choices": []
+  },
+  {
+    "name": "*SRE",
+    "group": "*SRE",
+    "forms": [
+      "*SRE <value>",
+      "*SRE?"
+    ],
+    "choices": []
+  },
+  {
+    "name": "*STB",
+    "group": "*STB",
+    "forms": [
+      "*STB?"
+    ],
+    "choices": []
+  },
+  {
+    "name": "*TST",
+    "group": "*TST",
+    "forms": [
+      "*TST?"
+    ],
+    "choices": []
+  },
+  {
+    "name": "*WAI",
+    "group": "*WAI",
+    "forms": [
+      "*WAI"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":LAN:DHCP",
+    "group": "LAN",
+    "forms": [
+      ":LAN:DHCP <bool>",
+      ":LAN:DHCP?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":LAN:AUToip",
+    "group": "LAN",
+    "forms": [
+      ":LAN:AUToip <bool>",
+      ":LAN:AUToip?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":LAN:GATeway",
+    "group": "LAN",
+    "forms": [
+      ":LAN:GATeway <string>",
+      ":LAN:GATeway?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":LAN:DNS",
+    "group": "LAN",
+    "forms": [
+      ":LAN:DNS <string>",
+      ":LAN:DNS?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":LAN:MAC",
+    "group": "LAN",
+    "forms": [
+      ":LAN:MAC?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":LAN:MANual",
+    "group": "LAN",
+    "forms": [
+      ":LAN:MANual <bool>",
+      ":LAN:MANual?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":LAN:INITiate",
+    "group": "LAN",
+    "forms": [
+      ":LAN:INITiate"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":LAN:IPADdress",
+    "group": "LAN",
+    "forms": [
+      ":LAN:IPADdress <string>",
+      ":LAN:IPADdress?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":LAN:SMASk",
+    "group": "LAN",
+    "forms": [
+      ":LAN:SMASk <string>",
+      ":LAN:SMASk?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":LAN:STATus",
+    "group": "LAN",
+    "forms": [
+      ":LAN:STATus?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":LAN:VISA",
+    "group": "LAN",
+    "forms": [
+      ":LAN:VISA?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":LAN:APPLy",
+    "group": "LAN",
+    "forms": [
+      ":LAN:APPLy"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:DISPlay",
+    "group": "MATH",
+    "forms": [
+      ":MATH:DISPlay <bool>",
+      ":MATH:DISPlay?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MATH:OPERator",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPERator <opt>",
+      ":MATH:OPERator?"
+    ],
+    "choices": [
+      "ADD|SUBTract|MULTiply|DIVision|AND|OR|XOR| NOT|FFT|INTG|DIFF|SQRT|LOG|LN|EXP|ABS| FILTer"
+    ]
+  },
+  {
+    "name": ":MATH:SOURce1",
+    "group": "MATH",
+    "forms": [
+      ":MATH:SOURce1 <src>",
+      ":MATH:SOURce1?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2|FX"
+    ]
+  },
+  {
+    "name": ":MATH:SOURce2",
+    "group": "MATH",
+    "forms": [
+      ":MATH:SOURce2 <src>",
+      ":MATH:SOURce2?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2|FX"
+    ]
+  },
+  {
+    "name": ":MATH:LSOUrce1",
+    "group": "MATH",
+    "forms": [
+      ":MATH:LSOUrce1 <src>",
+      ":MATH:LSOUrce1?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MATH:LSOUrce2",
+    "group": "MATH",
+    "forms": [
+      ":MATH:LSOUrce2 <src>",
+      ":MATH:LSOUrce2?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MATH:SCALe",
+    "group": "MATH",
+    "forms": [
+      ":MATH:SCALe <scale>",
+      ":MATH:SCALe?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:OFFSet",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OFFSet <offs>",
+      ":MATH:OFFSet?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:INVert",
+    "group": "MATH",
+    "forms": [
+      ":MATH:INVert <bool>",
+      ":MATH:INVert?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MATH:RESet",
+    "group": "MATH",
+    "forms": [
+      ":MATH:RESet"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MATH:FFT:SOURce",
+    "group": "MATH",
+    "forms": [
+      ":MATH:FFT:SOURce <src>",
+      ":MATH:FFT:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MATH:FFT:WINDow",
+    "group": "MATH",
+    "forms": [
+      ":MATH:FFT:WINDow <wnd>",
+      ":MATH:FFT:WINDow?"
+    ],
+    "choices": [
+      "RECTangle|BLACkman|HANNing|HAMMing| FLATtop|TRIangle"
+    ]
+  },
+  {
+    "name": ":MATH:FFT:SPLit",
+    "group": "MATH",
+    "forms": [
+      ":MATH:FFT:SPLit <bool>",
+      ":MATH:FFT:SPLit?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MATH:FFT:UNIT",
+    "group": "MATH",
+    "forms": [
+      ":MATH:FFT:UNIT <unit>",
+      ":MATH:FFT:UNIT?"
+    ],
+    "choices": [
+      "VRMS|DB"
+    ]
+  },
+  {
+    "name": ":MATH:FFT:HSCale",
+    "group": "MATH",
+    "forms": [
+      ":MATH:FFT:HSCale <hsc>",
+      ":MATH:FFT:HSCale?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:FFT:HCENter",
+    "group": "MATH",
+    "forms": [
+      ":MATH:FFT:HCENter <cent>",
+      ":MATH:FFT:HCENter?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:FFT:MODE",
+    "group": "MATH",
+    "forms": [
+      ":MATH:FFT:MODE <mode>",
+      ":MATH:FFT:MODE?"
+    ],
+    "choices": [
+      "TRACe|MEMory"
+    ]
+  },
+  {
+    "name": ":MATH:FILTer:TYPE",
+    "group": "MATH",
+    "forms": [
+      ":MATH:FILTer:TYPE <type>",
+      ":MATH:FILTer:TYPE?"
+    ],
+    "choices": [
+      "LPASs|HPASs|BPASs|BSTOP"
+    ]
+  },
+  {
+    "name": ":MATH:FILTer:W1",
+    "group": "MATH",
+    "forms": [
+      ":MATH:FILTer:W1 <freq1>",
+      ":MATH:FILTer:W1?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:FILTer:W2",
+    "group": "MATH",
+    "forms": [
+      ":MATH:FILTer:W2 <freq2>",
+      ":MATH:FILTer:W2?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:OPTion:STARt",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:STARt <sta>",
+      ":MATH:OPTion:STARt?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:OPTion:END",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:END <end>",
+      ":MATH:OPTion:END?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:OPTion:INVert",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:INVert <bool>",
+      ":MATH:OPTion:INVert?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MATH:OPTion:SENSitivity",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:SENSitivity <sens>",
+      ":MATH:OPTion:SENSitivity?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:OPTion:DIStance",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:DIStance <dist>",
+      ":MATH:OPTion:DIStance?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:OPTion:ASCale",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:ASCale <bool>",
+      ":MATH:OPTion:ASCale?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MATH:OPTion:THReshold1",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:THReshold1 <thre>",
+      ":MATH:OPTion:THReshold1?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:OPTion:THReshold2",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:THReshold2 <thre>",
+      ":MATH:OPTion:THReshold2?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MATH:OPTion:FX:SOURce1",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:FX:SOURce1 <src>",
+      ":MATH:OPTion:FX:SOURce1?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MATH:OPTion:FX:SOURce2",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:FX:SOURce2 <src>",
+      ":MATH:OPTion:FX:SOURce2?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MATH:OPTion:FX:OPERator",
+    "group": "MATH",
+    "forms": [
+      ":MATH:OPTion:FX:OPERator <op>",
+      ":MATH:OPTion:FX:OPERator?"
+    ],
+    "choices": [
+      "ADD|SUBTract|MULTiply|DIVision"
+    ]
+  },
+  {
+    "name": ":MASK:ENABle",
+    "group": "MASK",
+    "forms": [
+      ":MASK:ENABle <bool>",
+      ":MASK:ENABle?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MASK:SOURce",
+    "group": "MASK",
+    "forms": [
+      ":MASK:SOURce <source>",
+      ":MASK:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MASK:OPERate",
+    "group": "MASK",
+    "forms": [
+      ":MASK:OPERate <oper>",
+      ":MASK:OPERate?"
+    ],
+    "choices": [
+      "RUN|STOP"
+    ]
+  },
+  {
+    "name": ":MASK:MDISplay",
+    "group": "MASK",
+    "forms": [
+      ":MASK:MDISplay <bool>",
+      ":MASK:MDISplay?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MASK:SOOutput",
+    "group": "MASK",
+    "forms": [
+      ":MASK:SOOutput <bool>",
+      ":MASK:SOOutput?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MASK:OUTPut",
+    "group": "MASK",
+    "forms": [
+      ":MASK:OUTPut <bool>",
+      ":MASK:OUTPut?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MASK:X",
+    "group": "MASK",
+    "forms": [
+      ":MASK:X <x>",
+      ":MASK:X?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MASK:Y",
+    "group": "MASK",
+    "forms": [
+      ":MASK:Y <y>",
+      ":MASK:Y?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MASK:CREate",
+    "group": "MASK",
+    "forms": [
+      ":MASK:CREate"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MASK:PASSed",
+    "group": "MASK",
+    "forms": [
+      ":MASK:PASSed?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MASK:FAILed",
+    "group": "MASK",
+    "forms": [
+      ":MASK:FAILed?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MASK:TOTal",
+    "group": "MASK",
+    "forms": [
+      ":MASK:TOTal?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MASK:RESet",
+    "group": "MASK",
+    "forms": [
+      ":MASK:RESet"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MEASure:SOURce",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:SOURce <sour>",
+      ":MEASure:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2|MATH"
+    ]
+  },
+  {
+    "name": ":MEASure:COUNter:SOURce",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:COUNter:SOURce <sour>",
+      ":MEASure:COUNter:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2|OFF"
+    ]
+  },
+  {
+    "name": ":MEASure:COUNter:VALue",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:COUNter:VALue?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MEASure:CLEar",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:CLEar <item>"
+    ],
+    "choices": [
+      "ITEM1|ITEM2|ITEM3|ITEM4|ITEM5|ALL"
+    ]
+  },
+  {
+    "name": ":MEASure:RECover",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:RECover <item>"
+    ],
+    "choices": [
+      "ITEM1|ITEM2|ITEM3|ITEM4|ITEM5|ALL"
+    ]
+  },
+  {
+    "name": ":MEASure:ADISplay",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:ADISplay <bool>",
+      ":MEASure:ADISplay?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MEASure:AMSource",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:AMSource <src>[,<src>[,<src>[,<src>]]]",
+      ":MEASure:AMSource?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2|MATH"
+    ]
+  },
+  {
+    "name": ":MEASure:SETup:MAX",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:SETup:MAX <value>",
+      ":MEASure:SETup:MAX?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MEASure:SETup:MID",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:SETup:MID <value>",
+      ":MEASure:SETup:MID?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MEASure:SETup:MIN",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:SETup:MIN <value>",
+      ":MEASure:SETup:MIN?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":MEASure:SETup:PSA",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:SETup:PSA <source>",
+      ":MEASure:SETup:PSA?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MEASure:SETup:PSB",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:SETup:PSB <source>",
+      ":MEASure:SETup:PSB?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MEASure:SETup:DSA",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:SETup:DSA <source>",
+      ":MEASure:SETup:DSA?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MEASure:SETup:DSB",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:SETup:DSB <source>",
+      ":MEASure:SETup:DSB?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":MEASure:STATistic:DISPlay",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:STATistic:DISPlay <bool>",
+      ":MEASure:STATistic:DISPlay?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":MEASure:STATistic:MODE",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:STATistic:MODE <mode>",
+      ":MEASure:STATistic:MODE?"
+    ],
+    "choices": [
+      "DIFFerence|EXTRemum"
+    ]
+  },
+  {
+    "name": ":MEASure:STATistic:RESet",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:STATistic:RESet"
+    ],
+    "choices": [
+      "VMAX|VMIN|VPP|VTOP|VBASe|VAMP|VAVG|VRMS| OVERshoot|PREShoot|MARea|MPARea|PERiod|FRE Quency|RTIMe|FTIMe|PWIDth|NWIDth|PDUTy|ND UTy|RDELay|FDELay|RPHase|FPHase|TVMAX|TVMI N|PSLEWrate|NSLEWrate|VUPper|VMID|VLOWer|VA RIance|PVRMS|PPULses|NPULses|PEDGes|NEDGes",
+      "CHANnel1|CHANnel2|MATH",
+      "MAXimum|MINimum|CURRent|AVERages| DEViation"
+    ]
+  },
+  {
+    "name": ":MEASure:STATistic:ITEM",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:STATistic:ITEM <item>[,<src>[,<src>]]",
+      ":MEASure:STATistic:ITEM? <type>,<item>[,<src>[,<src>]]"
+    ],
+    "choices": [
+      "VMAX|VMIN|VPP|VTOP|VBASe|VAMP|VAVG|VRMS| OVERshoot|PREShoot|MARea|MPARea|PERiod|FRE Quency|RTIMe|FTIMe|PWIDth|NWIDth|PDUTy|ND UTy|RDELay|FDELay|RPHase|FPHase|TVMAX|TVMI N|PSLEWrate|NSLEWrate|VUPper|VMID|VLOWer|VA RIance|PVRMS|PPULses|NPULses|PEDGes|NEDGes",
+      "CHANnel1|CHANnel2|MATH",
+      "MAXimum|MINimum|CURRent|AVERages| DEViation"
+    ]
+  },
+  {
+    "name": ":MEASure:ITEM",
+    "group": "MEASure",
+    "forms": [
+      ":MEASure:ITEM <item>[,<src>[,<src>]]",
+      ":MEASure:ITEM? <item>[,<src>[,<src>]]"
+    ],
+    "choices": [
+      "VMAX|VMIN|VPP|VTOP|VBASe|VAMP|VAVG| VRMS|OVERshoot|PREShoot|MARea|MPARea| PERiod|FREQuency|RTIMe|FTIMe|PWIDth| NWIDth|PDUTy|NDUTy|RDELay|FDELay| RPHase|FPHase|TVMAX|TVMIN|PSLEWrate| NSLEWrate|VUPper|VMID|VLOWer|VARIance| PVRMS|PPULses|NPULses|PEDGes|NEDGes",
+      "CHANnel1|CHANnel2|MATH"
+    ]
+  },
+  {
+    "name": ":REFerence:DISPlay",
+    "group": "REFerence",
+    "forms": [
+      ":REFerence:DISPlay <bool>",
+      ":REFerence:DISPlay?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":REFerence<n>:ENABle",
+    "group": "REFerence",
+    "forms": [
+      ":REFerence<n>:ENABle <bool>",
+      ":REFerence<n>:ENABle?"
+    ],
+    "choices": [
+      "1|2|3|4|5|6|7|8|9|10",
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":REFerence<n>:SOURce",
+    "group": "REFerence",
+    "forms": [
+      ":REFerence<n>:SOURce <source>",
+      ":REFerence<n>:SOURce?"
+    ],
+    "choices": [
+      "1|2|3|4|5|6|7|8|9|10",
+      "CHANnel1|CHANnel2|MATH"
+    ]
+  },
+  {
+    "name": ":REFerence<n>:VSCale",
+    "group": "REFerence",
+    "forms": [
+      ":REFerence<n>:VSCale <scale>",
+      ":REFerence<n>:VSCale?"
+    ],
+    "choices": [
+      "1|2|3|4|5|6|7|8|9|10"
+    ]
+  },
+  {
+    "name": ":REFerence<n>:VOFFset",
+    "group": "REFerence",
+    "forms": [
+      ":REFerence<n>:VOFFset <offset>",
+      ":REFerence<n>:VOFFset?"
+    ],
+    "choices": [
+      "1|2|3|4|5|6|7|8|9|10"
+    ]
+  },
+  {
+    "name": ":REFerence<n>:RESet",
+    "group": "REFerence",
+    "forms": [
+      ":REFerence<n>:RESet"
+    ],
+    "choices": [
+      "1|2|3|4|5|6|7|8|9|10",
+      "1|2|3|4|5|6|7|8|9|10"
+    ]
+  },
+  {
+    "name": ":REFerence<n>:CURRent",
+    "group": "REFerence",
+    "forms": [
+      ":REFerence<n>:CURRent"
+    ],
+    "choices": [
+      "1|2|3|4|5|6|7|8|9|10"
+    ]
+  },
+  {
+    "name": ":REFerence<n>:SAVe",
+    "group": "REFerence",
+    "forms": [
+      ":REFerence<n>:SAVe"
+    ],
+    "choices": [
+      "1|2|3|4|5|6|7|8|9|10",
+      "1|2|3|4|5|6|7|8|9|10",
+      "GRAY|GREEn|LBLue|MAGenta|ORANge"
+    ]
+  },
+  {
+    "name": ":REFerence<n>:COLor",
+    "group": "REFerence",
+    "forms": [
+      ":REFerence<n>:COLor <color>",
+      ":REFerence<n>:COLor?"
+    ],
+    "choices": [
+      "1|2|3|4|5|6|7|8|9|10",
+      "GRAY|GREEn|LBLue|MAGenta|ORANge"
+    ]
+  },
+  {
+    "name": ":STORage:IMAGe:TYPE",
+    "group": "STORage",
+    "forms": [
+      ":STORage:IMAGe:TYPE <type>",
+      ":STORage:IMAGe:TYPE?"
+    ],
+    "choices": [
+      "PNG|BMP8|BMP24|JPEG|TIFF"
+    ]
+  },
+  {
+    "name": ":STORage:IMAGe:INVERT",
+    "group": "STORage",
+    "forms": [
+      ":STORage:IMAGe:INVERT <bool>",
+      ":STORage:IMAGe:INVERT?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":STORage:IMAGe:COLor",
+    "group": "STORage",
+    "forms": [
+      ":STORage:IMAGe:COLor <bool>",
+      ":STORage:IMAGe:COLor?"
+    ],
+    "choices": [
+      "ON|OFF"
+    ]
+  },
+  {
+    "name": ":SYSTem:AUToscale",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:AUToscale <bool>",
+      ":SYSTem:AUToscale?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":SYSTem:BEEPer",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:BEEPer <bool>",
+      ":SYSTem:BEEPer?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":SYSTem:ERRor[:NEXT]",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:ERRor[:NEXT]?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":SYSTem:GAM",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:GAM?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":SYSTem:LANGuage",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:LANGuage <lang>",
+      ":SYSTem:LANGuage?"
+    ],
+    "choices": [
+      "SCHinese|TCHinese|ENGLish|PORTuguese| GERMan|POLish|KORean|JAPAnese|FRENch| RUSSian"
+    ]
+  },
+  {
+    "name": ":SYSTem:LOCKed",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:LOCKed <bool>",
+      ":SYSTem:LOCKed?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":SYSTem:PON",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:PON <pon>",
+      ":SYSTem:PON?"
+    ],
+    "choices": [
+      "LATest|DEFault"
+    ]
+  },
+  {
+    "name": ":SYSTem:OPTion:INSTall",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:OPTion:INSTall <license>"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":SYSTem:OPTion:UNINSTall",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:OPTion:UNINSTall"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":SYSTem:RAM",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:RAM?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":SYSTem:SETup",
+    "group": "SYSTem",
+    "forms": [
+      ":SYSTem:SETup <setup_stream>",
+      ":SYSTem:SETup?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TIMebase:DELay:ENABle",
+    "group": "TIMebase",
+    "forms": [
+      ":TIMebase:DELay:ENABle <bool>",
+      ":TIMebase:DELay:ENABle?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":TIMebase:DELay:OFFSet",
+    "group": "TIMebase",
+    "forms": [
+      ":TIMebase:DELay:OFFSet <offset>",
+      ":TIMebase:DELay:OFFSet?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TIMebase:DELay:SCALe",
+    "group": "TIMebase",
+    "forms": [
+      ":TIMebase:DELay:SCALe <scale>",
+      ":TIMebase:DELay:SCALe?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TIMebase[:MAIN]:OFFSet",
+    "group": "TIMebase",
+    "forms": [
+      ":TIMebase[:MAIN]:OFFSet <offset>",
+      ":TIMebase[:MAIN]:OFFSet?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TIMebase[:MAIN]:SCALe",
+    "group": "TIMebase",
+    "forms": [
+      ":TIMebase[:MAIN]:SCALe <scale>",
+      ":TIMebase[:MAIN]:SCALe?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TIMebase:MODE",
+    "group": "TIMebase",
+    "forms": [
+      ":TIMebase:MODE <mode>",
+      ":TIMebase:MODE?"
+    ],
+    "choices": [
+      "MAIN|XY|ROLL"
+    ]
+  },
+  {
+    "name": ":TRIGger:MODE",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:MODE <mode>",
+      ":TRIGger:MODE?"
+    ],
+    "choices": [
+      "EDGE|PULSe|RUNT|WIND|NEDG|SLOPe|VIDeo| PATTern|DELay|TIMeout|DURation|SHOLd| RS232|IIC|SPI"
+    ]
+  },
+  {
+    "name": ":TRIGger:COUPling",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:COUPling <couple>",
+      ":TRIGger:COUPling?"
+    ],
+    "choices": [
+      "AC|DC|LFReject|HFReject"
+    ]
+  },
+  {
+    "name": ":TRIGger:STATus",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:STATus?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SWEep",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SWEep <sweep>",
+      ":TRIGger:SWEep?"
+    ],
+    "choices": [
+      "AUTO|NORMal|SINGle"
+    ]
+  },
+  {
+    "name": ":TRIGger:HOLDoff",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:HOLDoff <value>",
+      ":TRIGger:HOLDoff?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:NREJect",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:NREJect <bool>",
+      ":TRIGger:NREJect?"
+    ],
+    "choices": [
+      "1|ON",
+      "0|OFF"
+    ]
+  },
+  {
+    "name": ":TRIGger:POSition",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:POSition?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:EDGe:SOURce",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:EDGe:SOURce <source>",
+      ":TRIGger:EDGe:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2|AC|EXT"
+    ]
+  },
+  {
+    "name": ":TRIGger:EDGe:SLOPe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:EDGe:SLOPe <slope>",
+      ":TRIGger:EDGe:SLOPe?"
+    ],
+    "choices": [
+      "POSitive|NEGative|RFALl"
+    ]
+  },
+  {
+    "name": ":TRIGger:EDGe:LEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:EDGe:LEVel <level>",
+      ":TRIGger:EDGe:LEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:PULSe:SOURce",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:PULSe:SOURce <source>",
+      ":TRIGger:PULSe:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:PULSe:WHEN",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:PULSe:WHEN <when>",
+      ":TRIGger:PULSe:WHEN?"
+    ],
+    "choices": [
+      "PGReater|PLESs|NGReater|NLESs|PGLess|NGL ess"
+    ]
+  },
+  {
+    "name": ":TRIGger:PULSe:WIDTh",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:PULSe:WIDTh <width>",
+      ":TRIGger:PULSe:WIDTh?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:PULSe:UWIDth",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:PULSe:UWIDth <width>",
+      ":TRIGger:PULSe:UWIDth?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:PULSe:LWIDth",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:PULSe:LWIDth <width>",
+      ":TRIGger:PULSe:LWIDth?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:PULSe:LEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:PULSe:LEVel <level>",
+      ":TRIGger:PULSe:LEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SLOPe:SOURce",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SLOPe:SOURce <source>",
+      ":TRIGger:SLOPe:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:SLOPe:WHEN",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SLOPe:WHEN <when>",
+      ":TRIGger:SLOPe:WHEN?"
+    ],
+    "choices": [
+      "PGReater|PLESs|NGReater|NLESs|PGLess| NGLess"
+    ]
+  },
+  {
+    "name": ":TRIGger:SLOPe:TIME",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SLOPe:TIME <time>",
+      ":TRIGger:SLOPe:TIME?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SLOPe:TUPPer",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SLOPe:TUPPer <time>",
+      ":TRIGger:SLOPe:TUPPer?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SLOPe:TLOWer",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SLOPe:TLOWer <time>",
+      ":TRIGger:SLOPe:TLOWer?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SLOPe:WINDow",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SLOPe:WINDow <window>",
+      ":TRIGger:SLOPe:WINDow?"
+    ],
+    "choices": [
+      "TA|TB|TAB"
+    ]
+  },
+  {
+    "name": ":TRIGger:SLOPe:ALEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SLOPe:ALEVel <level>",
+      ":TRIGger:SLOPe:ALEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SLOPe:BLEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SLOPe:BLEVel <level>",
+      ":TRIGger:SLOPe:BLEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:VIDeo:SOURce",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:VIDeo:SOURce <source>",
+      ":TRIGger:VIDeo:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:VIDeo:POLarity",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:VIDeo:POLarity <polarity>",
+      ":TRIGger:VIDeo:POLarity?"
+    ],
+    "choices": [
+      "POSitive|NEGative"
+    ]
+  },
+  {
+    "name": ":TRIGger:VIDeo:MODE",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:VIDeo:MODE <mode>",
+      ":TRIGger:VIDeo:MODE?"
+    ],
+    "choices": [
+      "ODDField|EVENfield|LINE|ALINes"
+    ]
+  },
+  {
+    "name": ":TRIGger:VIDeo:LINE",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:VIDeo:LINE <line>",
+      ":TRIGger:VIDeo:LINE?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:VIDeo:STANdard",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:VIDeo:STANdard <standard>",
+      ":TRIGger:VIDeo:STANdard?"
+    ],
+    "choices": [
+      "PALSecam|NTSC|480P|576P"
+    ]
+  },
+  {
+    "name": ":TRIGger:VIDeo:LEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:VIDeo:LEVel <level>",
+      ":TRIGger:VIDeo:LEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:PATTern:PATTern",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:PATTern:PATTern <pa_ch1>[,<pa_ch2>]",
+      ":TRIGger:PATTern:PATTern?"
+    ],
+    "choices": [
+      "H|L|X|R|F",
+      "H|L|X|R|F"
+    ]
+  },
+  {
+    "name": ":TRIGger:PATTern:LEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:PATTern:LEVel <chan>,<level>",
+      ":TRIGger:PATTern:LEVel? <chan>"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:DURATion:SOURce",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DURATion:SOURce <source>",
+      ":TRIGger:DURATion:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:DURATion:TYPe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DURATion:TYPe <type_ch1>[,<type_ch2>]",
+      ":TRIGger:DURATion:TYPe?"
+    ],
+    "choices": [
+      "H|L|X",
+      "H|L|X"
+    ]
+  },
+  {
+    "name": ":TRIGger:DURATion:WHEN",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DURATion:WHEN <when>",
+      ":TRIGger:DURATion:WHEN?"
+    ],
+    "choices": [
+      "GREater|LESS|GLESs"
+    ]
+  },
+  {
+    "name": ":TRIGger:DURATion:TUPPer",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DURATion:TUPPer <NR3>",
+      ":TRIGger:DURATion:TUPPer?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:DURATion:TLOWer",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DURATion:TLOWer <NR3>",
+      ":TRIGger:DURATion:TLOWer?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:TIMeout:SOURce",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:TIMeout:SOURce <source>",
+      ":TRIGger:TIMeout:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:TIMeout:SLOPe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:TIMeout:SLOPe <slope>",
+      ":TRIGger:TIMeout:SLOPe?"
+    ],
+    "choices": [
+      "POSitive|NEGative|RFALl"
+    ]
+  },
+  {
+    "name": ":TRIGger:TIMeout:TIMe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:TIMeout:TIMe <NR3>",
+      ":TRIGger:TIMeout:TIMe?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:RUNT:SOURce",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RUNT:SOURce <source>",
+      ":TRIGger:RUNT:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:RUNT:POLarity",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RUNT:POLarity <polarity>",
+      ":TRIGger:RUNT:POLarity?"
+    ],
+    "choices": [
+      "POSitive|NEGative"
+    ]
+  },
+  {
+    "name": ":TRIGger:RUNT:WHEN",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RUNT:WHEN <when>",
+      ":TRIGger:RUNT:WHEN?"
+    ],
+    "choices": [
+      "NONE|GREater|LESS|GLESs"
+    ]
+  },
+  {
+    "name": ":TRIGger:RUNT:WUPPer",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RUNT:WUPPer <NR3>",
+      ":TRIGger:RUNT:WUPPer?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:RUNT:WLOWer",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RUNT:WLOWer <NR3>",
+      ":TRIGger:RUNT:WLOWer?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:RUNT:ALEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RUNT:ALEVel <level>",
+      ":TRIGger:RUNT:ALEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:RUNT:BLEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RUNT:BLEVel <level>",
+      ":TRIGger:RUNT:BLEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:WINDows:SOURce",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:WINDows:SOURce <source>",
+      ":TRIGger:WINDows:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:WINDows:SLOPe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:WINDows:SLOPe <type>",
+      ":TRIGger:WINDows:SLOPe?"
+    ],
+    "choices": [
+      "POSitive|NEGative|RFALl"
+    ]
+  },
+  {
+    "name": ":TRIGger:WINDows:POSition",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:WINDows:POSition <pos>",
+      ":TRIGger:WINDows:POSition?"
+    ],
+    "choices": [
+      "EXIT|ENTER|TIMe"
+    ]
+  },
+  {
+    "name": ":TRIGger:WINDows:TIMe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:WINDows:TIMe <NR3>",
+      ":TRIGger:WINDows:TIMe?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:WINDows:ALEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:WINDows:ALEVel <level>",
+      ":TRIGger:WINDows:ALEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:WINDows:BLEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:WINDows:BLEVel <level>",
+      ":TRIGger:WINDows:BLEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:DELay:SA",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DELay:SA <source>",
+      ":TRIGger:DELay:SA?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:DELay:SLOPA",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DELay:SLOPA <slope>",
+      ":TRIGger:DELay:SLOPA?"
+    ],
+    "choices": [
+      "POSitive|NEGative"
+    ]
+  },
+  {
+    "name": ":TRIGger:DELay:SB",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DELay:SB <source>",
+      ":TRIGger:DELay:SB?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:DELay:SLOPB",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DELay:SLOPB <slope>",
+      ":TRIGger:DELay:SLOPB?"
+    ],
+    "choices": [
+      "POSitive|NEGative"
+    ]
+  },
+  {
+    "name": ":TRIGger:DELay:TYPe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DELay:TYPe <type>",
+      ":TRIGger:DELay:TYPe?"
+    ],
+    "choices": [
+      "GREater|LESS|GLESs |GOUT"
+    ]
+  },
+  {
+    "name": ":TRIGger:DELay:TUPPer",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DELay:TUPPer <NR3>",
+      ":TRIGger:DELay:TUPPer?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:DELay:TLOWer",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:DELay:TLOWer <NR3>",
+      ":TRIGger:DELay:TLOWer?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SHOLd:DSrc",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SHOLd:DSrc <source>",
+      ":TRIGger:SHOLd:DSrc?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:SHOLd:CSrc",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SHOLd:CSrc <source>",
+      ":TRIGger:SHOLd:CSrc?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:SHOLd:SLOPe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SHOLd:SLOPe <slope>",
+      ":TRIGger:SHOLd:SLOPe?"
+    ],
+    "choices": [
+      "POSitive|NEGative"
+    ]
+  },
+  {
+    "name": ":TRIGger:SHOLd:PATTern",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SHOLd:PATTern <pattern>",
+      ":TRIGger:SHOLd:PATTern?"
+    ],
+    "choices": [
+      "H|L"
+    ]
+  },
+  {
+    "name": ":TRIGger:SHOLd:TYPe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SHOLd:TYPe <type>",
+      ":TRIGger:SHOLd:TYPe?"
+    ],
+    "choices": [
+      "SETup|HOLd|SETHOLd"
+    ]
+  },
+  {
+    "name": ":TRIGger:SHOLd:STIMe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SHOLd:STIMe <NR3>",
+      ":TRIGger:SHOLd:STIMe?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SHOLd:HTIMe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SHOLd:HTIMe <NR3>",
+      ":TRIGger:SHOLd:HTIMe?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:NEDGe:SOURce",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:NEDGe:SOURce <source>",
+      ":TRIGger:NEDGe:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:NEDGe:SLOPe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:NEDGe:SLOPe <slope>",
+      ":TRIGger:NEDGe:SLOPe?"
+    ],
+    "choices": [
+      "POSitive|NEGative"
+    ]
+  },
+  {
+    "name": ":TRIGger:NEDGe:IDLE",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:NEDGe:IDLE <NR3>",
+      ":TRIGger:NEDGe:IDLE?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:NEDGe:EDGE",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:NEDGe:EDGE <NR1>",
+      ":TRIGger:NEDGe:EDGE?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:NEDGe:LEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:NEDGe:LEVel <level>",
+      ":TRIGger:NEDGe:LEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:RS232:SOURce",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RS232:SOURce <source>",
+      ":TRIGger:RS232:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:RS232:WHEN",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RS232:WHEN <when>",
+      ":TRIGger:RS232:WHEN?"
+    ],
+    "choices": [
+      "STARt|ERRor|PARity|DATA"
+    ]
+  },
+  {
+    "name": ":TRIGger:RS232:PARity",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RS232:PARity <parity>",
+      ":TRIGger:RS232:PARity?"
+    ],
+    "choices": [
+      "EVEN|ODD|NONE"
+    ]
+  },
+  {
+    "name": ":TRIGger:RS232:STOP",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RS232:STOP <bit>",
+      ":TRIGger:RS232:STOP?"
+    ],
+    "choices": [
+      "1|2"
+    ]
+  },
+  {
+    "name": ":TRIGger:RS232:DATA",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RS232:DATA <data>",
+      ":TRIGger:RS232:DATA?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:RS232:WIDTh",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RS232:WIDTh <width>",
+      ":TRIGger:RS232:WIDTh?"
+    ],
+    "choices": [
+      "5|6|7|8"
+    ]
+  },
+  {
+    "name": ":TRIGger:RS232:BAUD",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RS232:BAUD <baud_rate>",
+      ":TRIGger:RS232:BAUD?"
+    ],
+    "choices": [
+      "2400|4800|9600|19200|38400|57600|1 15200|230400|460800|921600|1000000 |USER"
+    ]
+  },
+  {
+    "name": ":TRIGger:RS232:BUSer",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RS232:BUSer <user baud>",
+      ":TRIGger:RS232:BUSer?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:RS232:LEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:RS232:LEVel <level>",
+      ":TRIGger:RS232:LEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:IIC:SCL",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:IIC:SCL <source>",
+      ":TRIGger:IIC:SCL?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:IIC:SDA",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:IIC:SDA <source>",
+      ":TRIGger:IIC:SDA?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:IIC:WHEN",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:IIC:WHEN <trig_type>",
+      ":TRIGger:IIC:WHEN?"
+    ],
+    "choices": [
+      "STARt|RESTart|STOP|NACKnowledge| ADDRess|DATA|ADATa"
+    ]
+  },
+  {
+    "name": ":TRIGger:IIC:AWIDth",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:IIC:AWIDth <bits>",
+      ":TRIGger:IIC:AWIDth?"
+    ],
+    "choices": [
+      "7|8|10"
+    ]
+  },
+  {
+    "name": ":TRIGger:IIC:ADDRess",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:IIC:ADDRess <adr>",
+      ":TRIGger:IIC:ADDRess?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:IIC:DIRection",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:IIC:DIRection <dir>",
+      ":TRIGger:IIC:DIRection?"
+    ],
+    "choices": [
+      "READ|WRITe|RWRite"
+    ]
+  },
+  {
+    "name": ":TRIGger:IIC:DATA",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:IIC:DATA <data>",
+      ":TRIGger:IIC:DATA?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:IIC:CLEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:IIC:CLEVel <level>",
+      ":TRIGger:IIC:CLEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:IIC:DLEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:IIC:DLEVel <level>",
+      ":TRIGger:IIC:DLEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SPI:SCL",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:SCL <source>",
+      ":TRIGger:SPI:SCL?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:SPI:SDA",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:SDA <source>",
+      ":TRIGger:SPI:SDA?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":TRIGger:SPI:WHEN",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:WHEN <trig_type>",
+      ":TRIGger:SPI:WHEN?"
+    ],
+    "choices": [
+      "CS|TIMeout"
+    ]
+  },
+  {
+    "name": ":TRIGger:SPI:WIDTh",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:WIDTh <width>",
+      ":TRIGger:SPI:WIDTh?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SPI:DATA",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:DATA <data>",
+      ":TRIGger:SPI:DATA?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SPI:TIMeout",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:TIMeout <time_value>",
+      ":TRIGger:SPI:TIMeout?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SPI:SLOPe",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:SLOPe <slope>",
+      ":TRIGger:SPI:SLOPe?"
+    ],
+    "choices": [
+      "POSitive|NEGative"
+    ]
+  },
+  {
+    "name": ":TRIGger:SPI:CLEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:CLEVel <level>",
+      ":TRIGger:SPI:CLEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SPI:DLEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:DLEVel <level>",
+      ":TRIGger:SPI:DLEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SPI:SLEVel",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:SLEVel <level>",
+      ":TRIGger:SPI:SLEVel?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":TRIGger:SPI:MODE",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:MODE <mode>",
+      ":TRIGger:SPI:MODE?"
+    ],
+    "choices": [
+      "HIGH|LOW"
+    ]
+  },
+  {
+    "name": ":TRIGger:SPI:CS",
+    "group": "TRIGger",
+    "forms": [
+      ":TRIGger:SPI:CS <source>",
+      ":TRIGger:SPI:CS?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2"
+    ]
+  },
+  {
+    "name": ":WAVeform:SOURce",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:SOURce <source>",
+      ":WAVeform:SOURce?"
+    ],
+    "choices": [
+      "CHANnel1|CHANnel2|MATH"
+    ]
+  },
+  {
+    "name": ":WAVeform:MODE",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:MODE <mode>",
+      ":WAVeform:MODE?"
+    ],
+    "choices": [
+      "NORMal|MAXimum|RAW"
+    ]
+  },
+  {
+    "name": ":WAVeform:FORMat",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:FORMat <format>",
+      ":WAVeform:FORMat?"
+    ],
+    "choices": [
+      "WORD|BYTE|ASCii"
+    ]
+  },
+  {
+    "name": ":WAVeform:DATA",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:DATA?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":WAVeform:XINCrement",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:XINCrement?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":WAVeform:XORigin",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:XORigin?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":WAVeform:XREFerence",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:XREFerence?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":WAVeform:YINCrement",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:YINCrement?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":WAVeform:YORigin",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:YORigin?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":WAVeform:YREFerence",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:YREFerence?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":WAVeform:STARt",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:STARt <sta>",
+      ":WAVeform:STARt?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":WAVeform:STOP",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:STOP <stop>",
+      ":WAVeform:STOP?"
+    ],
+    "choices": []
+  },
+  {
+    "name": ":WAVeform:PREamble",
+    "group": "WAVeform",
+    "forms": [
+      ":WAVeform:PREamble?"
+    ],
+    "choices": []
+  }
+]
